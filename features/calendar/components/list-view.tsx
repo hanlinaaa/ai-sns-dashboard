@@ -13,7 +13,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import type { CalendarEvent, ContentStatus, Platform, PublishJob, PublishJobStatus } from "@/domain/types"
+import type {
+  CalendarEvent,
+  ContentStatus,
+  Platform,
+  PublishJob,
+  PublishJobStatus,
+} from "@/domain/types"
 
 interface ListViewProps {
   events: CalendarEvent[]

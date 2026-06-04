@@ -45,7 +45,7 @@ function createPublishJobId(eventId: string) {
 }
 
 function shouldFailMockPublish(event: CalendarEvent) {
-  return /fail|error|障害|失敗/i.test(`${event.title}\n${event.content}`)
+  return /fail|error|rejected|blocked/i.test(`${event.title}\n${event.content}`)
 }
 
 async function publishWithMockConnector(
@@ -113,7 +113,8 @@ export function createPublishingService(repositories: DataRepositories): Publish
         completedAt,
         errorMessage,
       })
-      const eventStatus = status === "succeeded" ? "published" : status === "failed" ? "failed" : event.status
+      const eventStatus =
+        status === "succeeded" ? "published" : status === "failed" ? "failed" : event.status
       const historyStatus =
         status === "succeeded" ? "published" : status === "failed" ? "failed" : undefined
       const events = await repositories.calendarRepository.list()
@@ -138,7 +139,7 @@ export function createPublishingService(repositories: DataRepositories): Publish
         message:
           status === "succeeded"
             ? "Published successfully."
-            : errorMessage ?? "Publishing did not complete.",
+            : (errorMessage ?? "Publishing did not complete."),
       }
     } catch (error) {
       console.error("Failed to persist publish result:", error)

@@ -208,11 +208,12 @@ function fromPlatformAccount(record: PlatformAccount): PlatformAccountStorageRec
   }
 }
 
-function toAnalyticsMetric(record: AnalyticsMetricStorageRecord | AnalyticsMetric): AnalyticsMetric {
+function toAnalyticsMetric(
+  record: AnalyticsMetricStorageRecord | AnalyticsMetric,
+): AnalyticsMetric {
   return withVersion({
     ...record,
-    capturedAt:
-      record.capturedAt instanceof Date ? record.capturedAt : new Date(record.capturedAt),
+    capturedAt: record.capturedAt instanceof Date ? record.capturedAt : new Date(record.capturedAt),
   })
 }
 

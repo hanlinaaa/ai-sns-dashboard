@@ -1,18 +1,20 @@
 import type { Metadata } from "next"
-import { Noto_Sans_JP } from "next/font/google"
+import { Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
 
-const notoSansJP = Noto_Sans_JP({
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 })
+
 export const metadata: Metadata = {
-  title: "サクサクSNS君 - AIコンテンツジェネレーター",
-  description: "AIでSNS投稿を簡単に作成。X、Instagram、LINEに最適化されたコンテンツを瞬時に生成。",
-  generator: "v0.app",
+  title: "AI SNS Ops Dashboard",
+  description:
+    "AI SNS content operations dashboard for generation, validation, scheduling, publishing queue demos, and analytics.",
+  generator: "Next.js",
   icons: {
     icon: [
       {
@@ -38,11 +40,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ja" className="bg-background" suppressHydrationWarning>
-      <body className={`${notoSansJP.variable} font-sans antialiased`}>
+    <html lang="en" className="bg-background" suppressHydrationWarning>
+      <body className={`${inter.variable} font-sans antialiased`}>
         {children}
         <Toaster position="bottom-right" />
-        {process.env.NODE_ENV === "production" && <Analytics />}
+        {process.env.NODE_ENV === "production" ? <Analytics /> : null}
       </body>
     </html>
   )

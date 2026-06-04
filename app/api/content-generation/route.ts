@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import {
   generateContentWithOpenAi,
+  generateMockContent,
   validateGeneratedContent,
   type GenerateContentInput,
 } from "@/services/content-generation"
@@ -11,13 +12,13 @@ export async function POST(request: Request) {
     const apiKey = process.env.OPENAI_API_KEY
 
     if (!apiKey) {
-      return NextResponse.json(
-        {
-          error:
-            "OPENAI_API_KEY is not configured. Add it to .env.local before generating content.",
-        },
-        { status: 500 },
-      )
+      const contents = generateMockContent(input)
+
+      return NextResponse.json({
+        contents,
+        records: validateGeneratedContent(contents, input.brandSettings),
+        provider: "mock",
+      })
     }
 
     const contents = await generateContentWithOpenAi(input, {
@@ -29,8 +30,11 @@ export async function POST(request: Request) {
     return NextResponse.json({
       contents,
       records: validateGeneratedContent(contents, input.brandSettings),
+      provider: "openai",
     })
   } catch (error) {
+    console.error("Content generation route failed:", error)
+
     return NextResponse.json(
       {
         error: error instanceof Error ? error.message : "Failed to generate content.",

@@ -68,14 +68,13 @@ export default function CalendarPage() {
           nextSystemSettings,
           nextHistoryRecords,
           nextPublishJobs,
-        ] =
-          await Promise.all([
-            repositories.calendarRepository.list(),
-            repositories.settingsRepository.brandSettings.get(BRAND_SETTINGS_ID),
-            repositories.settingsRepository.systemSettings.get(SYSTEM_SETTINGS_ID),
-            repositories.historyRepository.list(),
-            repositories.publishJobRepository.list(),
-          ])
+        ] = await Promise.all([
+          repositories.calendarRepository.list(),
+          repositories.settingsRepository.brandSettings.get(BRAND_SETTINGS_ID),
+          repositories.settingsRepository.systemSettings.get(SYSTEM_SETTINGS_ID),
+          repositories.historyRepository.list(),
+          repositories.publishJobRepository.list(),
+        ])
         setBrandSettings(nextBrandSettings ?? undefined)
         setSystemSettings(nextSystemSettings ?? undefined)
         setHistoryRecords(nextHistoryRecords)

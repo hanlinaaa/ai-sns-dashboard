@@ -2,19 +2,19 @@
 
 import { useMemo } from "react"
 import {
-  startOfMonth,
-  endOfMonth,
-  startOfWeek,
-  endOfWeek,
   eachDayOfInterval,
+  endOfMonth,
+  endOfWeek,
   format,
-  isSameMonth,
   isSameDay,
+  isSameMonth,
   isToday,
+  startOfMonth,
+  startOfWeek,
 } from "date-fns"
 import { cn } from "@/components/ui/utils"
 import type { CalendarEvent } from "@/domain/types"
-import { XIcon, InstagramIcon, LineIcon } from "@/features/platform/platform-icons"
+import { InstagramIcon, LineIcon, XIcon } from "@/features/platform/platform-icons"
 
 interface MonthViewProps {
   currentDate: Date
@@ -49,19 +49,19 @@ export function MonthView({
     return eachDayOfInterval({ start, end })
   }, [currentDate])
 
-  const handleDragStart = (e: React.DragEvent, eventId: string) => {
-    e.dataTransfer.setData("eventId", eventId)
-    e.dataTransfer.effectAllowed = "move"
+  const handleDragStart = (event: React.DragEvent, eventId: string) => {
+    event.dataTransfer.setData("eventId", eventId)
+    event.dataTransfer.effectAllowed = "move"
   }
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.dataTransfer.dropEffect = "move"
+  const handleDragOver = (event: React.DragEvent) => {
+    event.preventDefault()
+    event.dataTransfer.dropEffect = "move"
   }
 
-  const handleDrop = (e: React.DragEvent, date: Date) => {
-    e.preventDefault()
-    const eventId = e.dataTransfer.getData("eventId")
+  const handleDrop = (event: React.DragEvent, date: Date) => {
+    event.preventDefault()
+    const eventId = event.dataTransfer.getData("eventId")
     if (eventId) {
       onEventDrop(eventId, date)
     }
@@ -70,16 +70,16 @@ export function MonthView({
   return (
     <div className="flex h-full flex-col bg-card">
       <div className="grid grid-cols-7 border-b bg-muted/35">
-        {["日", "月", "火", "水", "木", "金", "土"].map((day) => (
+        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
           <div key={day} className="py-2.5 text-center text-xs font-semibold text-muted-foreground">
             {day}
           </div>
         ))}
       </div>
       <div className="grid flex-1 grid-cols-7 grid-rows-5 auto-rows-[minmax(108px,1fr)]">
-        {days.map((day, i) => {
+        {days.map((day, index) => {
           const dayEvents = events
-            .filter((e) => isSameDay(e.scheduledAt, day))
+            .filter((event) => isSameDay(event.scheduledAt, day))
             .sort((a, b) => a.scheduledAt.getTime() - b.scheduledAt.getTime())
           const isCurrentMonth = isSameMonth(day, currentDate)
 
@@ -87,12 +87,12 @@ export function MonthView({
             <div
               key={day.toString()}
               className={cn(
-                "flex min-h-[108px] flex-col gap-1 border-r border-b p-2 transition-colors hover:bg-muted/30",
+                "flex min-h-[108px] flex-col gap-1 border-b border-r p-2 transition-colors hover:bg-muted/30",
                 !isCurrentMonth && "bg-muted/20 text-muted-foreground",
-                i % 7 === 0 && "border-l-0", // remove left border for sunday
+                index % 7 === 0 && "border-l-0",
               )}
               onDragOver={handleDragOver}
-              onDrop={(e) => handleDrop(e, day)}
+              onDrop={(event) => handleDrop(event, day)}
               onClick={() => onDateClick(day)}
             >
               <div className="flex items-center justify-between">
@@ -106,43 +106,44 @@ export function MonthView({
                 </span>
               </div>
               <div className="custom-scrollbar flex-1 space-y-1 overflow-y-auto pr-1">
-                {dayEvents.map((event) => {
-                  const Icon = platformIcons[event.platform]
+                {dayEvents.map((calendarEvent) => {
+                  const Icon = platformIcons[calendarEvent.platform]
 
                   return (
                     <div
-                      key={event.id}
+                      key={calendarEvent.id}
                       draggable
-                      onDragStart={(e) => {
-                        e.stopPropagation()
-                        handleDragStart(e, event.id)
+                      onDragStart={(event) => {
+                        event.stopPropagation()
+                        handleDragStart(event, calendarEvent.id)
                       }}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onEventClick(event)
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        onEventClick(calendarEvent)
                       }}
                       className={cn(
                         "cursor-grab truncate rounded-md border px-2 py-1.5 text-xs shadow-xs transition-all active:cursor-grabbing",
-                        event.status === "draft" &&
+                        calendarEvent.status === "draft" &&
                           "border-dashed bg-muted/50 text-muted-foreground",
-                        event.status === "failed" &&
+                        calendarEvent.status === "failed" &&
                           "border-red-500 bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300",
-                        (event.status === "scheduled" || event.status === "published") &&
-                          platformColors[event.platform],
-                        event.status === "published" && "opacity-60",
+                        (calendarEvent.status === "scheduled" ||
+                          calendarEvent.status === "published") &&
+                          platformColors[calendarEvent.platform],
+                        calendarEvent.status === "published" && "opacity-60",
                         "hover:-translate-y-px hover:opacity-90",
                       )}
                     >
-                      <div className="flex items-center gap-1.5 mb-0.5">
-                        <Icon className="w-3 h-3 shrink-0" />
-                        <span className="font-semibold truncate">
-                          {format(event.scheduledAt, "HH:mm")}
+                      <div className="mb-0.5 flex items-center gap-1.5">
+                        <Icon className="h-3 w-3 shrink-0" />
+                        <span className="truncate font-semibold">
+                          {format(calendarEvent.scheduledAt, "HH:mm")}
                         </span>
-                        {event.status === "published" && (
-                          <span className="ml-auto text-[10px]">✓</span>
-                        )}
+                        {calendarEvent.status === "published" ? (
+                          <span className="ml-auto text-[10px]">Done</span>
+                        ) : null}
                       </div>
-                      <div className="truncate">{event.title}</div>
+                      <div className="truncate">{calendarEvent.title}</div>
                     </div>
                   )
                 })}

@@ -1,5 +1,5 @@
-import { getPlatformRule } from "@/domain/platform-rules"
 import { withCurrentDataVersion } from "@/domain/data-version"
+import { getPlatformRule } from "@/domain/platform-rules"
 import type {
   BrandSettings,
   ContentLengthPreference,
@@ -55,6 +55,7 @@ export interface PlatformGeneratedContent {
 export interface GenerateContentResult {
   contents: GeneratedContentByPlatform
   records: PlatformGeneratedContent[]
+  provider?: "openai" | "mock"
 }
 
 export interface OpenAiChatMessage {
@@ -71,9 +72,9 @@ export interface OpenAiCompatibleOptions {
 const allPlatforms: Platform[] = ["x", "instagram", "line"]
 
 const defaultContent: GeneratedContentByPlatform = {
-  x: "Fill out the form and generate real AI copy for X.",
-  instagram: "Fill out the form and generate real AI copy for Instagram.",
-  line: "Fill out the form and generate real AI copy for LINE.",
+  x: "Fill out the form and generate demo or real AI copy for X.",
+  instagram: "Fill out the form and generate demo or real AI copy for Instagram.",
+  line: "Fill out the form and generate demo or real AI copy for LINE.",
 }
 
 export const defaultGeneratedContent = defaultContent
@@ -94,7 +95,7 @@ const lengthInstruction: Record<ContentLengthPreference, string> = {
 function splitWords(value?: string): string[] {
   return (
     value
-      ?.split(/[,，\n]/)
+      ?.split(/[,\n]/)
       .map((word) => word.trim())
       .filter(Boolean) ?? []
   )
@@ -165,7 +166,6 @@ function buildHighPerformingContentSection(input: GenerateContentInput) {
 }
 
 export function buildContentGenerationPrompt(input: GenerateContentInput): OpenAiChatMessage[] {
-  const platforms = input.platform === "x" ? allPlatforms : allPlatforms
   const validationText =
     input.validationIssues && input.validationIssues.length > 0
       ? input.validationIssues.map((issue) => `- ${issue.code}: ${issue.message}`).join("\n")
@@ -188,7 +188,7 @@ export function buildContentGenerationPrompt(input: GenerateContentInput): OpenA
         `Primary selected platform: ${input.platform}`,
         "",
         "Platform rules:",
-        buildPlatformRulesSection(platforms),
+        buildPlatformRulesSection(allPlatforms),
         "",
         "Brand settings:",
         buildBrandSection(input),
@@ -213,6 +213,49 @@ export function buildContentGenerationPrompt(input: GenerateContentInput): OpenA
   ]
 }
 
+function formatTopic(input: GenerateContentInput): string {
+  const brief = input.keywords.trim()
+  if (brief.length > 0) return brief
+  return "the current campaign"
+}
+
+function formatAudience(input: GenerateContentInput): string {
+  const audience = input.targetAudience.trim()
+  if (audience.length > 0) return audience
+  return "the target audience"
+}
+
+function getRequiredWords(input: GenerateContentInput): string {
+  const words = getBrandValue(input, "mustHaveWords")
+  return words.length > 0 ? ` Include ${words.join(" and ")}.` : ""
+}
+
+export function generateMockContent(input: GenerateContentInput): GeneratedContentByPlatform {
+  const topic = formatTopic(input)
+  const audience = formatAudience(input)
+  const brandName = input.brandSettings?.brandName || "AI SNS Ops"
+  const requiredWords = getRequiredWords(input)
+  const actionLabel =
+    input.action === "fixValidation"
+      ? "This version tightens brand and platform compliance."
+      : "This version is generated from demo data."
+
+  return {
+    x: `${brandName}: ${topic} for ${audience}. Clear next steps, quick value, and a reusable campaign angle for your SNS workflow.${requiredWords}`,
+    instagram: [
+      `${brandName} campaign update`,
+      "",
+      `${topic} is ready for ${audience}. ${actionLabel} Use it as a polished draft for launch planning, approval review, and content reuse.`,
+      "",
+      "#SNSMarketing #ContentOps #CampaignPlanning",
+      requiredWords.trim(),
+    ]
+      .filter(Boolean)
+      .join("\n"),
+    line: `${brandName} update: ${topic} is available for ${audience}. Please review the details and use this demo draft for scheduling, approval, or follow-up messaging.${requiredWords}`,
+  }
+}
+
 function parseJsonObject(text: string): Partial<GeneratedContentByPlatform> {
   try {
     return JSON.parse(text) as Partial<GeneratedContentByPlatform>
@@ -227,39 +270,44 @@ export async function generateContentWithOpenAi(
   input: GenerateContentInput,
   options: OpenAiCompatibleOptions,
 ): Promise<GeneratedContentByPlatform> {
-  const response = await fetch(
-    `${options.baseUrl ?? "https://api.openai.com/v1"}/chat/completions`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${options.apiKey}`,
-        "Content-Type": "application/json",
+  try {
+    const response = await fetch(
+      `${options.baseUrl ?? "https://api.openai.com/v1"}/chat/completions`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${options.apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: options.model ?? "gpt-4o-mini",
+          messages: buildContentGenerationPrompt(input),
+          temperature: 0.7,
+          response_format: { type: "json_object" },
+        }),
       },
-      body: JSON.stringify({
-        model: options.model ?? "gpt-4o-mini",
-        messages: buildContentGenerationPrompt(input),
-        temperature: 0.7,
-        response_format: { type: "json_object" },
-      }),
-    },
-  )
+    )
 
-  if (!response.ok) {
-    const message = await response.text()
-    throw new Error(message || `Content generation failed with status ${response.status}.`)
-  }
+    if (!response.ok) {
+      const message = await response.text()
+      throw new Error(message || `Content generation failed with status ${response.status}.`)
+    }
 
-  const data = (await response.json()) as {
-    choices?: Array<{ message?: { content?: string } }>
-  }
-  const rawContent = data.choices?.[0]?.message?.content
-  if (!rawContent) throw new Error("The AI provider returned an empty response.")
+    const data = (await response.json()) as {
+      choices?: Array<{ message?: { content?: string } }>
+    }
+    const rawContent = data.choices?.[0]?.message?.content
+    if (!rawContent) throw new Error("The AI provider returned an empty response.")
 
-  const parsed = parseJsonObject(rawContent)
-  return {
-    x: parsed.x?.trim() || "",
-    instagram: parsed.instagram?.trim() || "",
-    line: parsed.line?.trim() || "",
+    const parsed = parseJsonObject(rawContent)
+    return {
+      x: parsed.x?.trim() || "",
+      instagram: parsed.instagram?.trim() || "",
+      line: parsed.line?.trim() || "",
+    }
+  } catch (error) {
+    console.error("OpenAI-compatible content generation failed:", error)
+    throw error
   }
 }
 

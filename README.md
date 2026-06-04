@@ -1,49 +1,81 @@
-# AI SNS Dashboard
+# AI SNS Ops Dashboard
 
-SNS content planning dashboard built with Next.js, React, TypeScript, Tailwind CSS, and shadcn/ui.
+日本市場向けのSNS運用支援ダッシュボードです。AI生成、ブランドルール検証、投稿スケジュール、履歴管理、分析ダッシュボードを統合しています。OpenAI API が未設定の環境でも mock generation で完全なデモを確認できます。
 
-## Directory Contract
+AI SNS Ops Dashboard is an AI SNS content operations dashboard for marketing teams. It turns one campaign brief into platform-specific copy for X, Instagram, and LINE, validates the content against brand and platform rules, stores reusable history, schedules posts, demonstrates a mock publishing queue, and shows repository-driven analytics.
 
-The project keeps a fixed 5-layer structure:
+![Dashboard screenshot](output/playwright/browser-smoke.png)
 
-- `app/`: Next.js App Router pages, layouts, route-level loading/error UI, and global CSS.
-- `features/`: business-facing UI and workflows. Add new product functionality under `features/<feature-name>/`.
-- `components/ui/`: shared, generic UI primitives and UI-only helpers such as `cn`, `use-toast`, and `use-mobile`.
-- `domain/`: shared domain types, constants, enums, labels, and mock domain data.
-- `services/`: side-effectful code such as local storage access, API clients, persistence, and integrations.
+## Highlights
 
-Do not add new source folders at the root without first updating this contract and the lint rules.
+- AI content generation with real OpenAI-compatible API support and deterministic mock fallback.
+- Multi-platform preview for X, Instagram, and LINE from one campaign brief.
+- Content validation for platform limits, hashtag limits, NG words, and must-have words.
+- Generation history with reuse, export, favorite, status, and scheduling workflows.
+- Calendar scheduling with month, week, day, and list views.
+- Mock publishing queue that demonstrates job creation, retry, cancellation, and failure handling.
+- Dashboard analytics backed by repository data for realistic demo scenarios.
+- Supabase-ready repository layer with schema prepared for persistence migration.
 
-## Import Rules
+## Tech Stack
 
-- Use the `@/` alias for cross-layer imports.
-- `app/` may compose `features/`, `components/ui/`, `domain/`, and `services/`.
-- `features/` may use `components/ui/`, `domain/`, and `services/`.
-- `components/ui/` must stay generic and must not import business features.
-- `domain/` should stay side-effect free.
-- `services/` may use `domain/`, but should not import React components.
-- Legacy imports from `@/lib/*`, `@/hooks/*`, or non-UI `@/components/*` are blocked by ESLint.
+- Next.js 16 App Router
+- React 19
+- TypeScript strict mode
+- Tailwind CSS
+- Radix UI and shadcn-style UI primitives
+- Recharts
+- OpenAI-compatible Chat Completions API
+- LocalStorage demo backend
+- Supabase-ready repository and SQL schema
+- Vitest
+- GitHub Actions CI
 
-## Data Access
+## Capability Boundaries
 
-UI code must call repositories or services only. It must not read or write browser storage, Supabase, or other persistence APIs directly.
+| Area                       | Status                                                           |
+| -------------------------- | ---------------------------------------------------------------- |
+| OpenAI content generation  | Real API supported through `app/api/content-generation/route.ts` |
+| No-key public demo         | Supported through `generateMockContent` fallback                 |
+| Supabase                   | Schema and repository prepared in `services/repositories`        |
+| Publishing                 | Mock connector for demo queue behavior                           |
+| Analytics                  | Repository-driven mock/demo data                                 |
+| OAuth and real SNS posting | Planned extension, intentionally not claimed as complete         |
 
-Repository contracts live in `services/repositories/contracts.ts`:
+## Architecture
 
-- `historyRepository`
-- `calendarRepository`
-- `settingsRepository`
-- `generatedContentRepository`
-- `publishJobRepository`
-- `platformAccountRepository`
+```mermaid
+flowchart TD
+  A["Next.js App Router"] --> B["Feature Modules"]
+  B --> C["Domain Rules"]
+  B --> D["Services / Repositories"]
+  C --> E["Platform Validation"]
+  C --> F["Workflow Rules"]
+  D --> G["LocalStorage Demo Backend"]
+  D --> H["Supabase-ready Backend"]
+  A --> I["OpenAI API Route"]
+  I --> J["OpenAI-compatible Provider"]
+  I --> K["Mock Generation Fallback"]
+  D --> L["Mock Publishing Connector"]
+```
 
-The default backend is `localStorage`. Switch backends with:
+## Directory Structure
+
+- `app/`: Next.js pages, layouts, API routes, loading/error UI, and global styles.
+- `features/`: product workflows such as content generation, calendar, dashboard, history, and navigation.
+- `domain/`: side-effect-free types, validation rules, workflow rules, labels, and demo data.
+- `services/`: OpenAI client, schedule service, publishing service, analytics service, and repository implementations.
+- `components/ui/`: shared generic UI primitives.
+
+## Data and Integrations
+
+The default backend is `localStorage`, so the project runs as a complete demo after cloning.
 
 ```bash
 NEXT_PUBLIC_DATA_BACKEND=localStorage
 ```
 
-For Supabase:
+Supabase can be enabled with:
 
 ```bash
 NEXT_PUBLIC_DATA_BACKEND=supabase
@@ -51,13 +83,15 @@ NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-publishable-or-anon-key
 ```
 
-Create the Supabase tables with `services/repositories/supabase-schema.sql`. The current schema stores each record as versioned JSON so the app can migrate the domain model without rewriting page code.
+Create the Supabase tables with:
 
-## AI Content Generation
+```bash
+services/repositories/supabase-schema.sql
+```
 
-The home page is a real AI generation workflow. Client components call `app/api/content-generation/route.ts`; the route calls an OpenAI-compatible chat completions API through `services/content-generation.ts`.
+## AI Generation
 
-Configure server-side AI credentials in `.env.local`:
+Configure server-side credentials in `.env.local` when using a real provider:
 
 ```bash
 OPENAI_API_KEY=your-api-key
@@ -65,35 +99,46 @@ OPENAI_BASE_URL=https://api.openai.com/v1
 OPENAI_MODEL=gpt-4o-mini
 ```
 
-`OPENAI_BASE_URL` can point at any OpenAI-compatible backend for local testing. Do not commit shared or third-party public keys.
+When `OPENAI_API_KEY` is empty, the API route returns deterministic mock copy instead of failing. This keeps `pnpm install && pnpm dev` usable for reviewers without private credentials.
 
-Generation behavior is centralized in `services/content-generation.ts`:
+## Demo Scenarios
 
-- `buildContentGenerationPrompt`: platform rules, brand settings, tone, target audience, keywords, NG words, must-have words, and length preference.
-- `generateContentWithOpenAi`: OpenAI-compatible API client.
-- `validateGeneratedContent`: runs `validateContent` for X, Instagram, and LINE.
-- `createGeneratedContentRecords`: creates traceable `GeneratedContent` and `HistoryRecord` objects.
+The included demo data reflects practical SNS operations:
 
-Every generated response is validated against `domain/platform-rules.ts` and brand rules from `BrandSettings`, then persisted through the repositories.
+- Retail weekend campaign
+- Cafe seasonal drink launch
+- Beauty product launch review hold
+- B2B seminar announcement
+- LINE coupon campaign
 
-## Naming Rules
-
-- Business components: PascalCase component names, kebab-case filenames, for example `HistoryTable` in `history-table.tsx`.
-- UI primitives: PascalCase exports in `components/ui`, matching shadcn-style filenames where practical.
-- Service functions: verb-first camelCase, for example `loadHistoryRecords`, `saveBrandSettings`, `addCalendarEvent`.
-- Types and interfaces: PascalCase nouns, for example `HistoryRecord`, `BrandSettings`, `CalendarEvent`.
-- Status unions/enums: domain-specific names ending in `Status`, for example `ContentStatus`.
-- Label maps and constants: camelCase for exported maps such as `platformLabels`; SCREAMING_SNAKE_CASE only for true constants like storage keys.
-
-## Development Commands
+## Getting Started
 
 ```bash
+pnpm install
+cp .env.example .env.local
 pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Quality Gate
+
+```bash
 pnpm typecheck
 pnpm lint
+pnpm test
 pnpm format:check
 pnpm build
 pnpm check
 ```
 
-Use `pnpm check` before handing off larger changes. It runs type checking, linting, formatting checks, and the production build.
+`pnpm check` runs type checking, linting, focused unit tests, Prettier validation, and the production build.
+
+Focused business-rule tests cover:
+
+- `domain/validation.test.ts`
+- `domain/workflow.test.ts`
+- `services/schedule-service.test.ts`
+- `services/content-generation.test.ts`
+
+GitHub Actions runs the same production-oriented checks on pushes and pull requests.

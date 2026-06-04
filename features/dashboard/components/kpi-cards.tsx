@@ -65,7 +65,9 @@ export function KPICards({ kpis }: KPICardsProps) {
             </div>
             <div className="flex items-baseline gap-2">
               <span className="text-3xl font-bold text-foreground">{card.value}</span>
-              {card.unit ? <span className="text-sm text-muted-foreground">{card.unit}</span> : null}
+              {card.unit ? (
+                <span className="text-sm text-muted-foreground">{card.unit}</span>
+              ) : null}
             </div>
           </CardContent>
         </Card>
