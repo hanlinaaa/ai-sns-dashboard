@@ -1,0 +1,26 @@
+[     194ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/07vw_next_dist_13_qw0k._.js:2477
+[     516ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/07vw_next_dist_13_qw0k._.js:2477
+[     788ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://jkypldcbnfpghbvsayfj.supabase.co/rest/v1/analytics_metrics?select=id,data,data_version&order=updated_at.desc:0
+[     789ms] [ERROR] Failed to build dashboard analytics: RepositoryError: {"code":"PGRST205","details":null,"hint":null,"message":"Could not find the table 'public.analytics_metrics' in the schema cache"}
+    at requestSupabase (http://localhost:3000/_next/static/chunks/_0cosx78._.js:3354:15)
+    at async Object.list (http://localhost:3000/_next/static/chunks/_0cosx78._.js:3373:24)
+    at async Promise.all (index 3)
+    at async Object.getDashboardAnalytics (http://localhost:3000/_next/static/chunks/_0cosx78._.js:2595:89)
+    at async DashboardPage.useEffect.loadDashboard (http://localhost:3000/_next/static/chunks/_0cosx78._.js:3683:43) @ http://localhost:3000/_next/static/chunks/07vw_next_dist_13_qw0k._.js:3318
+[   15958ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/07vw_next_dist_13_qw0k._.js:2477
+[   16810ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/07vw_next_dist_13_qw0k._.js:2477
+[   16832ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/07vw_next_dist_13_qw0k._.js:2477
+[   17034ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://jkypldcbnfpghbvsayfj.supabase.co/rest/v1/analytics_metrics?select=id,data,data_version&order=updated_at.desc:0
+[   17035ms] [ERROR] Failed to build dashboard analytics: RepositoryError: {"code":"PGRST205","details":null,"hint":null,"message":"Could not find the table 'public.analytics_metrics' in the schema cache"}
+    at requestSupabase (http://localhost:3000/_next/static/chunks/_0cosx78._.js:3354:15)
+    at async Object.list (http://localhost:3000/_next/static/chunks/_0cosx78._.js:3373:24)
+    at async Promise.all (index 3)
+    at async Object.getDashboardAnalytics (http://localhost:3000/_next/static/chunks/_0cosx78._.js:2595:89)
+    at async DashboardPage.useEffect.loadDashboard (http://localhost:3000/_next/static/chunks/_0cosx78._.js:3683:43) @ http://localhost:3000/_next/static/chunks/07vw_next_dist_13_qw0k._.js:3318
+[   42918ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://jkypldcbnfpghbvsayfj.supabase.co/rest/v1/analytics_metrics?select=id,data,data_version&order=updated_at.desc:0
+[   42919ms] [ERROR] Failed to build dashboard analytics: RepositoryError: {"code":"PGRST205","details":null,"hint":null,"message":"Could not find the table 'public.analytics_metrics' in the schema cache"}
+    at requestSupabase (http://localhost:3000/_next/static/chunks/_0cosx78._.js?id=%255Bproject%255D%252Fservices%252Frepositories%252Fsupabase-repository.ts+%255Bapp-client%255D+%2528ecmascript%2529:55:15)
+    at async Object.list (http://localhost:3000/_next/static/chunks/_0cosx78._.js?id=%255Bproject%255D%252Fservices%252Frepositories%252Fsupabase-repository.ts+%255Bapp-client%255D+%2528ecmascript%2529:74:24)
+    at async Promise.all (index 3)
+    at async Object.getDashboardAnalytics (http://localhost:3000/_next/static/chunks/_0cosx78._.js:2595:89)
+    at async DashboardPage.useEffect.loadDashboard (http://localhost:3000/_next/static/chunks/_0cosx78._.js:3683:43) @ http://localhost:3000/_next/static/chunks/07vw_next_dist_13_qw0k._.js:3318

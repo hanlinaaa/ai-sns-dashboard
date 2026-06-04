@@ -1,0 +1,231 @@
+- generic:
+  - generic:
+    - complementary:
+      - generic:
+        - generic:
+          - link:
+            - /url: /
+            - generic:
+              - img
+            - generic:
+              - heading [level=1]: サクサクSNS君
+              - paragraph: AI Content Generator
+        - navigation:
+          - generic:
+            - generic:
+              - generic: ワークスペース
+            - generic:
+              - link:
+                - /url: /dashboard
+                - img
+                - generic: ダッシュボード
+              - link:
+                - /url: /
+                - img
+                - generic: コンテンツ生成
+              - link:
+                - /url: /calendar
+                - img
+                - generic: 投稿カレンダー
+              - link:
+                - /url: /history
+                - img
+                - generic: 生成履歴
+          - generic:
+            - generic:
+              - generic: 管理
+            - generic:
+              - link:
+                - /url: /settings/brand
+                - img
+                - generic: ブランド設定
+              - link:
+                - /url: /settings/system
+                - img
+                - generic: システム設定
+    - main:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - img
+            - generic:
+              - heading [level=1]: Publishing Calendar
+              - paragraph: Manage scheduled content before approval and publishing.
+          - generic:
+            - generic:
+              - img
+              - combobox:
+                - generic: All platforms
+                - img
+              - combobox:
+                - generic: All statuses
+                - img
+            - generic:
+              - button: Month
+              - button: Week
+              - button: Day
+              - button: List
+            - generic:
+              - button:
+                - img
+              - button: Schedule list
+              - button:
+                - img
+            - button:
+              - img
+              - text: Export
+            - button:
+              - img
+              - text: New schedule
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - table:
+                    - rowgroup:
+                      - row:
+                        - columnheader: Scheduled at
+                        - columnheader: Title
+                        - columnheader: Platform
+                        - columnheader: Status
+                        - columnheader: Content
+                        - columnheader: Actions
+                    - rowgroup:
+                      - row:
+                        - cell: 2026/06/05 01:14
+                        - cell: calendar smoke
+                        - cell: X
+                        - cell:
+                          - generic: Scheduled
+                        - cell:
+                          - generic: calendar smoke
+                        - cell:
+                          - generic:
+                            - button:
+                              - img
+                              - text: Edit
+                            - button:
+                              - img
+                              - text: Copy
+                      - row:
+                        - cell: 2026/06/05 12:00
+                        - cell: 春の新作コレクション、期間限定セール
+                        - cell: X
+                        - cell:
+                          - generic: Scheduled
+                        - cell:
+                          - generic: "【新商品発売】 春の新作コレクションが登場しました。 最新アイテムを今すぐチェック。 #春コーデ #新作 #ファッション"
+                        - cell:
+                          - generic:
+                            - button:
+                              - img
+                              - text: Edit
+                            - button:
+                              - img
+                              - text: Copy
+                      - row:
+                        - cell: 2026/06/05 12:00
+                        - cell: 会員限定、ポイント2倍キャンペーン
+                        - cell: LINE
+                        - cell:
+                          - generic: Scheduled
+                        - cell:
+                          - generic: いつもご利用いただきありがとうございます。 会員様限定でポイント2倍キャンペーンを開催します。
+                        - cell:
+                          - generic:
+                            - button:
+                              - img
+                              - text: Edit
+                            - button:
+                              - img
+                              - text: Copy
+                      - row:
+                        - cell: 2026/06/06 12:00
+                        - cell: 会員限定、ポイント2倍キャンペーン
+                        - cell: LINE
+                        - cell:
+                          - generic: Scheduled
+                        - cell:
+                          - generic: いつもご利用いただきありがとうございます。 会員様限定でポイント2倍キャンペーンを開催します。
+                        - cell:
+                          - generic:
+                            - button:
+                              - img
+                              - text: Edit
+                            - button:
+                              - img
+                              - text: Copy
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e100] [cursor=pointer]:
+    - img [ref=e101]
+  - alert
+  - dialog:
+    - generic:
+      - heading [level=2]: New schedule
+      - paragraph: Validate content, import reusable history assets, and save the publishing workflow status.
+    - generic:
+      - generic:
+        - generic: Import from history
+        - combobox [expanded]:
+          - generic: No imported history record
+          - img
+      - generic:
+        - generic: Title
+        - textbox:
+          - /placeholder: Campaign announcement
+      - generic:
+        - generic:
+          - generic: Platform
+          - combobox:
+            - generic: X
+            - img
+        - generic:
+          - generic: Tone
+          - combobox:
+            - generic: Friendly
+            - img
+      - generic:
+        - generic:
+          - generic: Status
+          - combobox:
+            - generic: Scheduled
+            - img
+        - generic:
+          - generic: Date
+          - textbox: 2026-06-05
+      - generic:
+        - generic: Time
+        - textbox: 12:00
+      - generic:
+        - generic:
+          - generic: Content
+          - img
+        - textbox
+      - alert:
+        - generic: Content warning
+        - generic: "Content is missing required word: Sakusaku SNS."
+      - alert:
+        - generic: Approval policy
+        - generic: Approval is not required by current system settings. Scheduled items can enter the calendar directly.
+    - generic:
+      - button: Cancel
+      - button [disabled]: Save
+    - button:
+      - img
+      - generic: Close
+  - listbox [ref=e478]:
+    - option "No imported history record" [active] [selected] [ref=e479]:
+      - generic [ref=e481]:
+        - img
+      - generic [ref=e482]: No imported history record
+    - option "X - 春の新作コレクション、期間限定セール" [ref=e483]:
+      - generic [ref=e485]: X - 春の新作コレクション、期間限定セール
+    - option "INSTAGRAM - 週末限定セール、最大50%OFF" [ref=e486]:
+      - generic [ref=e488]: INSTAGRAM - 週末限定セール、最大50%OFF
+    - option "LINE - 会員限定、ポイント2倍キャンペーン" [ref=e489]:
+      - generic [ref=e491]: LINE - 会員限定、ポイント2倍キャンペーン
+    - option "X - 新作コスメ、限定カラー" [ref=e492]:
+      - generic [ref=e494]: X - 新作コスメ、限定カラー

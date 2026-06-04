@@ -1,0 +1,9 @@
+$ next dev "--port" "3001"
+⨯ Another next dev server is already running.
+
+- Local:        http://localhost:3000
+- PID:          22540
+- Dir:          S:\ai-sns-dashboard
+- Log:          .next\dev\logs\next-development.log
+
+Run taskkill /PID 22540 /F to stop it.

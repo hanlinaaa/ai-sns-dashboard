@@ -1,0 +1,224 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - link "サクサクSNS君 AI Content Generator" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img [ref=e8]
+          - generic [ref=e10]:
+            - heading "サクサクSNS君" [level=1] [ref=e11]
+            - paragraph [ref=e12]: AI Content Generator
+        - navigation [ref=e13]:
+          - generic [ref=e14]:
+            - generic [ref=e16]: ワークスペース
+            - generic [ref=e18]:
+              - link "ダッシュボード" [ref=e19] [cursor=pointer]:
+                - /url: /dashboard
+                - img [ref=e20]
+                - generic [ref=e25]: ダッシュボード
+              - link "コンテンツ生成" [ref=e26] [cursor=pointer]:
+                - /url: /
+                - img [ref=e27]
+                - generic [ref=e30]: コンテンツ生成
+              - link "投稿カレンダー" [ref=e31] [cursor=pointer]:
+                - /url: /calendar
+                - img [ref=e32]
+                - generic [ref=e34]: 投稿カレンダー
+              - link "生成履歴" [ref=e35] [cursor=pointer]:
+                - /url: /history
+                - img [ref=e36]
+                - generic [ref=e40]: 生成履歴
+          - generic [ref=e41]:
+            - generic [ref=e43]: 管理
+            - generic [ref=e45]:
+              - link "ブランド設定" [ref=e46] [cursor=pointer]:
+                - /url: /settings/brand
+                - img [ref=e47]
+                - generic [ref=e53]: ブランド設定
+              - link "システム設定" [ref=e54] [cursor=pointer]:
+                - /url: /settings/system
+                - img [ref=e55]
+                - generic [ref=e58]: システム設定
+    - main [ref=e59]:
+      - generic [ref=e61]:
+        - img [ref=e63]
+        - generic [ref=e67]:
+          - heading "Content History" [level=1] [ref=e68]
+          - paragraph [ref=e69]: Manage generated content as reusable assets across editing, approval, scheduling, and publishing.
+      - generic [ref=e70]:
+        - generic [ref=e71]:
+          - generic [ref=e72]:
+            - img [ref=e73]
+            - textbox "Search content, keywords, or audience" [ref=e76]
+          - button "Export" [ref=e78]:
+            - img
+            - text: Export
+        - generic [ref=e79]:
+          - combobox [ref=e80]:
+            - generic: All platforms
+            - img
+          - combobox [ref=e82]:
+            - generic: All tones
+            - img
+          - combobox [ref=e84]:
+            - generic: All statuses
+            - img
+          - button "Date range" [ref=e86]:
+            - img
+            - text: Date range
+          - button "Favorites" [ref=e87]:
+            - img
+            - text: Favorites
+          - generic [ref=e88]: 4 result(s)
+      - generic [ref=e94]:
+        - checkbox "Select all history records" [ref=e95]
+        - generic [ref=e96]: Select records
+      - generic [ref=e97]:
+        - generic [ref=e98]:
+          - checkbox "Select history record hist-1" [ref=e100]
+          - generic [ref=e101]:
+            - generic [ref=e102]:
+              - generic [ref=e103]:
+                - img
+                - text: X
+              - generic [ref=e104]: Friendly
+              - generic [ref=e105]: Published
+              - generic [ref=e106]: Validation warning
+              - generic [ref=e107]: "Audience: 20代女性"
+              - generic [ref=e108]: 2024/01/15 10:30
+            - paragraph [ref=e109]: "【新商品発売】 春の新作コレクションが登場しました。 #春コーデ #新作 #ファッション"
+            - generic [ref=e110]: "Keywords: 春の新作コレクション、期間限定セール"
+            - generic [ref=e111]:
+              - button [ref=e112]:
+                - img
+              - button "Copy" [ref=e113]:
+                - img
+                - text: Copy
+              - link "Regenerate" [ref=e114] [cursor=pointer]:
+                - /url: /?platform=x&tone=friendly&targetAudience=20%E4%BB%A3%E5%A5%B3%E6%80%A7&keywords=%E6%98%A5%E3%81%AE%E6%96%B0%E4%BD%9C%E3%82%B3%E3%83%AC%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%80%81%E6%9C%9F%E9%96%93%E9%99%90%E5%AE%9A%E3%82%BB%E3%83%BC%E3%83%AB
+                - img
+                - text: Regenerate
+              - button "Add to calendar" [disabled]:
+                - img
+                - text: Add to calendar
+              - button "Edit" [ref=e115]:
+                - img
+                - text: Edit
+              - combobox [ref=e116]:
+                - generic: Published
+                - img
+              - button [ref=e117]:
+                - img
+        - generic [ref=e118]:
+          - checkbox "Select history record hist-2" [ref=e120]
+          - generic [ref=e121]:
+            - generic [ref=e122]:
+              - generic [ref=e123]:
+                - img
+                - text: Instagram
+              - generic [ref=e124]: Promotion
+              - generic [ref=e125]: Published
+              - generic [ref=e126]: Validation warning
+              - generic [ref=e127]: "Audience: ファッション好きの女性"
+              - generic [ref=e128]: 2024/01/14 15:20
+            - paragraph [ref=e129]: "週末限定BIG SALEを開催中です。 人気アイテムをお得にチェックできます。 #セール #週末限定 #お得情報"
+            - generic [ref=e130]: "Keywords: 週末限定セール、最大50%OFF"
+            - generic [ref=e131]:
+              - button [ref=e132]:
+                - img
+              - button "Copy" [ref=e133]:
+                - img
+                - text: Copy
+              - link "Regenerate" [ref=e134] [cursor=pointer]:
+                - /url: /?platform=instagram&tone=promo&targetAudience=%E3%83%95%E3%82%A1%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3%E5%A5%BD%E3%81%8D%E3%81%AE%E5%A5%B3%E6%80%A7&keywords=%E9%80%B1%E6%9C%AB%E9%99%90%E5%AE%9A%E3%82%BB%E3%83%BC%E3%83%AB%E3%80%81%E6%9C%80%E5%A4%A750%25OFF
+                - img
+                - text: Regenerate
+              - button "Add to calendar" [disabled]:
+                - img
+                - text: Add to calendar
+              - button "Edit" [ref=e135]:
+                - img
+                - text: Edit
+              - combobox [ref=e136]:
+                - generic: Published
+                - img
+              - button [ref=e137]:
+                - img
+        - generic [ref=e138]:
+          - checkbox "Select history record hist-3" [ref=e140]
+          - generic [ref=e141]:
+            - generic [ref=e142]:
+              - generic [ref=e143]:
+                - img
+                - text: LINE
+              - generic [ref=e144]: Business
+              - generic [ref=e145]: Scheduled
+              - generic [ref=e146]: Validation warning
+              - generic [ref=e147]: "Audience: 既存顧客"
+              - generic [ref=e148]: 2024/01/13 09:00
+            - paragraph [ref=e149]: いつもご利用いただきありがとうございます。 会員様限定でポイント2倍キャンペーンを開催します。
+            - generic [ref=e150]: "Keywords: 会員限定、ポイント2倍キャンペーン"
+            - generic [ref=e151]:
+              - button [ref=e152]:
+                - img
+              - button "Copy" [ref=e153]:
+                - img
+                - text: Copy
+              - link "Regenerate" [ref=e154] [cursor=pointer]:
+                - /url: /?platform=line&tone=business&targetAudience=%E6%97%A2%E5%AD%98%E9%A1%A7%E5%AE%A2&keywords=%E4%BC%9A%E5%93%A1%E9%99%90%E5%AE%9A%E3%80%81%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%882%E5%80%8D%E3%82%AD%E3%83%A3%E3%83%B3%E3%83%9A%E3%83%BC%E3%83%B3
+                - img
+                - text: Regenerate
+              - button "Add to calendar" [ref=e155]:
+                - img
+                - text: Add to calendar
+              - button "Edit" [ref=e156]:
+                - img
+                - text: Edit
+              - combobox [ref=e157]:
+                - generic: Scheduled
+                - img
+              - button [ref=e158]:
+                - img
+        - generic [ref=e159]:
+          - checkbox "Select history record hist-4" [ref=e161]
+          - generic [ref=e162]:
+            - generic [ref=e163]:
+              - generic [ref=e164]:
+                - img
+                - text: X
+              - generic [ref=e165]: Gyaru
+              - generic [ref=e166]: Generated
+              - generic [ref=e167]: Validation warning
+              - generic [ref=e168]: "Audience: 10代から20代前半"
+              - generic [ref=e169]: 2024/01/12 18:45
+            - paragraph [ref=e208]: "新作コスメの限定カラーがかわいすぎる件。 #新作コスメ #限定"
+            - generic [ref=e171]: "Keywords: 新作コスメ、限定カラー"
+            - generic [ref=e209]:
+              - button [ref=e210]:
+                - img
+              - button "Copy" [ref=e211]:
+                - img
+                - text: Copy
+              - link "Regenerate" [ref=e212] [cursor=pointer]:
+                - /url: /?platform=x&tone=gyaru&targetAudience=10%E4%BB%A3%E3%81%8B%E3%82%8920%E4%BB%A3%E5%89%8D%E5%8D%8A&keywords=%E6%96%B0%E4%BD%9C%E3%82%B3%E3%82%B9%E3%83%A1%E3%80%81%E9%99%90%E5%AE%9A%E3%82%AB%E3%83%A9%E3%83%BC
+                - img
+                - text: Regenerate
+              - button "Add to calendar" [ref=e213]:
+                - img
+                - text: Add to calendar
+              - button "Edit" [ref=e214]:
+                - img
+                - text: Edit
+              - combobox [ref=e215]:
+                - generic: Generated
+                - img
+              - button [ref=e216]:
+                - img
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=e217]:
+        - img [ref=e219]
+        - generic [ref=e222]: Added to calendar.
+  - button "Open Next.js Dev Tools" [ref=e185] [cursor=pointer]:
+    - img [ref=e186]
+  - alert [ref=e189]

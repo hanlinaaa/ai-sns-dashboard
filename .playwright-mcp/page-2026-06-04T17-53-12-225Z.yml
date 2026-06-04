@@ -1,0 +1,281 @@
+- generic:
+  - generic:
+    - complementary:
+      - generic:
+        - generic:
+          - link:
+            - /url: /
+            - generic:
+              - img
+            - generic:
+              - heading [level=1]: サクサクSNS君
+              - paragraph: AI Content Generator
+        - navigation:
+          - generic:
+            - generic:
+              - generic: ワークスペース
+            - generic:
+              - link:
+                - /url: /dashboard
+                - img
+                - generic: ダッシュボード
+              - link:
+                - /url: /
+                - img
+                - generic: コンテンツ生成
+              - link:
+                - /url: /calendar
+                - img
+                - generic: 投稿カレンダー
+              - link:
+                - /url: /history
+                - img
+                - generic: 生成履歴
+          - generic:
+            - generic:
+              - generic: 管理
+            - generic:
+              - link:
+                - /url: /settings/brand
+                - img
+                - generic: ブランド設定
+              - link:
+                - /url: /settings/system
+                - img
+                - generic: システム設定
+    - main:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - img
+            - generic:
+              - heading [level=1]: Publishing Calendar
+              - paragraph: Manage scheduled content before approval and publishing.
+          - generic:
+            - generic:
+              - img
+              - combobox:
+                - generic: All platforms
+                - img
+              - combobox:
+                - generic: All statuses
+                - img
+            - generic:
+              - button: Month
+              - button: Week
+              - button: Day
+              - button: List
+            - generic:
+              - button:
+                - img
+              - button: 2026/06
+              - button:
+                - img
+            - button:
+              - img
+              - text: Export
+            - button:
+              - img
+              - text: New schedule
+      - generic:
+        - generic:
+          - generic:
+            - generic: 日
+            - generic: 月
+            - generic: 火
+            - generic: 水
+            - generic: 木
+            - generic: 金
+            - generic: 土
+          - generic:
+            - generic:
+              - generic:
+                - generic: "31"
+            - generic:
+              - generic:
+                - generic: "1"
+            - generic:
+              - generic:
+                - generic: "2"
+            - generic:
+              - generic:
+                - generic: "3"
+            - generic:
+              - generic:
+                - generic: "4"
+            - generic:
+              - generic:
+                - generic: "5"
+              - generic:
+                - generic:
+                  - generic:
+                    - img
+                    - generic: 01:14
+                  - generic: calendar smoke
+                - generic:
+                  - generic:
+                    - img
+                    - generic: 12:00
+                  - generic: 春の新作コレクション、期間限定セール
+            - generic:
+              - generic:
+                - generic: "6"
+              - generic:
+                - generic:
+                  - generic:
+                    - img
+                    - generic: 12:00
+                  - generic: 会員限定、ポイント2倍キャンペーン
+            - generic:
+              - generic:
+                - generic: "7"
+            - generic:
+              - generic:
+                - generic: "8"
+            - generic:
+              - generic:
+                - generic: "9"
+            - generic:
+              - generic:
+                - generic: "10"
+            - generic:
+              - generic:
+                - generic: "11"
+            - generic:
+              - generic:
+                - generic: "12"
+            - generic:
+              - generic:
+                - generic: "13"
+            - generic:
+              - generic:
+                - generic: "14"
+            - generic:
+              - generic:
+                - generic: "15"
+            - generic:
+              - generic:
+                - generic: "16"
+            - generic:
+              - generic:
+                - generic: "17"
+            - generic:
+              - generic:
+                - generic: "18"
+            - generic:
+              - generic:
+                - generic: "19"
+            - generic:
+              - generic:
+                - generic: "20"
+            - generic:
+              - generic:
+                - generic: "21"
+            - generic:
+              - generic:
+                - generic: "22"
+            - generic:
+              - generic:
+                - generic: "23"
+            - generic:
+              - generic:
+                - generic: "24"
+            - generic:
+              - generic:
+                - generic: "25"
+            - generic:
+              - generic:
+                - generic: "26"
+            - generic:
+              - generic:
+                - generic: "27"
+            - generic:
+              - generic:
+                - generic: "28"
+            - generic:
+              - generic:
+                - generic: "29"
+            - generic:
+              - generic:
+                - generic: "30"
+            - generic:
+              - generic:
+                - generic: "1"
+            - generic:
+              - generic:
+                - generic: "2"
+            - generic:
+              - generic:
+                - generic: "3"
+            - generic:
+              - generic:
+                - generic: "4"
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e100] [cursor=pointer]:
+    - img [ref=e101]
+  - alert
+  - dialog:
+    - generic:
+      - heading [level=2]: New schedule
+      - paragraph: Validate content, import reusable history assets, and save the publishing workflow status.
+    - generic:
+      - generic:
+        - generic: Import from history
+        - combobox [expanded]:
+          - generic: No imported history record
+          - img
+      - generic:
+        - generic: Title
+        - textbox:
+          - /placeholder: Campaign announcement
+      - generic:
+        - generic:
+          - generic: Platform
+          - combobox:
+            - generic: X
+            - img
+        - generic:
+          - generic: Tone
+          - combobox:
+            - generic: Friendly
+            - img
+      - generic:
+        - generic:
+          - generic: Status
+          - combobox:
+            - generic: Scheduled
+            - img
+        - generic:
+          - generic: Date
+          - textbox: 2026-06-05
+      - generic:
+        - generic: Time
+        - textbox: 12:00
+      - generic:
+        - generic:
+          - generic: Content
+          - img
+        - textbox
+      - alert:
+        - generic: Content warning
+        - generic: "Content is missing required word: Sakusaku SNS."
+    - generic:
+      - button: Cancel
+      - button [disabled]: Save
+    - button:
+      - img
+      - generic: Close
+  - listbox [ref=e151]:
+    - option "No imported history record" [active] [selected] [ref=e152]:
+      - generic [ref=e154]:
+        - img
+      - generic [ref=e155]: No imported history record
+    - option "X - 春の新作コレクション、期間限定セール" [ref=e156]:
+      - generic [ref=e158]: X - 春の新作コレクション、期間限定セール
+    - option "INSTAGRAM - 週末限定セール、最大50%OFF" [ref=e159]:
+      - generic [ref=e161]: INSTAGRAM - 週末限定セール、最大50%OFF
+    - option "LINE - 会員限定、ポイント2倍キャンペーン" [ref=e162]:
+      - generic [ref=e164]: LINE - 会員限定、ポイント2倍キャンペーン
+    - option "X - 新作コスメ、限定カラー" [ref=e165]:
+      - generic [ref=e167]: X - 新作コスメ、限定カラー

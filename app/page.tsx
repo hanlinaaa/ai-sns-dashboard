@@ -1,87 +1,56 @@
 "use client"
 
-import { Suspense, useEffect, useState } from "react"
+import { Suspense, useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "next/navigation"
-import { ContentForm } from "@/components/dashboard/content-form"
-import { PreviewArea } from "@/components/dashboard/preview-area"
-import { Sidebar } from "@/components/dashboard/sidebar"
-import { Platform, Tone } from "@/lib/types"
 import { toast } from "sonner"
+import { withCurrentDataVersion } from "@/domain/data-version"
+import { appLabels } from "@/domain/labels"
+import type { BrandSettings, Platform, Tone } from "@/domain/types"
+import { validateContent, type ValidationIssue } from "@/domain/validation"
+import {
+  ContentForm,
+  type ContentFormData,
+} from "@/features/content-generation/components/content-form"
+import { PreviewArea } from "@/features/content-generation/components/preview-area"
+import { Sidebar } from "@/features/navigation/sidebar"
+import { createAnalyticsService, type TopContentPoint } from "@/services/analytics"
+import {
+  createGeneratedContentRecords,
+  defaultGeneratedContent,
+  type GenerateContentInput,
+  type GenerateContentResult,
+  type GeneratedContentByPlatform,
+  type GenerationAction,
+} from "@/services/content-generation"
+import { getRepositories } from "@/services/repositories"
+import { toDataAccessErrorInfo } from "@/services/repositories/errors"
 
-interface InitialFormData {
-  tone: Tone
-  targetAudience: string
-  keywords: string
+type ValidationIssueMap = Record<Platform, ValidationIssue[]>
+
+type InitialFormData = Partial<ContentFormData>
+
+const emptyValidationIssues: ValidationIssueMap = {
+  x: [],
+  instagram: [],
+  line: [],
 }
 
-interface GeneratedContent {
-  x: string
-  instagram: string
-  line: string
+function isPlatform(value: string | null): value is Platform {
+  return value === "x" || value === "instagram" || value === "line"
 }
 
-interface GenerateFormData {
-  platform: Platform
-  tone: Tone
-  targetAudience: string
-  keywords: string
+function isTone(value: string | null): value is Tone {
+  return value === "business" || value === "friendly" || value === "gyaru" || value === "promo"
 }
 
-const defaultGeneratedContent: GeneratedContent = {
-  x: "【新商品発売】\n\n✨ 春の新作コレクションがついに登場！\n\nトレンドを押さえた最新アイテムを\n今すぐチェック 👇\n\n#春コーデ #新作 #ファッション",
-  instagram:
-    "🌸 春の新作コレクション 🌸\n\n待望の春コレクションがついに解禁！\n\n今季のトレンドカラーを取り入れた\nフレッシュなアイテムが勢揃い ✨\n\n詳しくはプロフィールのリンクから 🔗\n\n#春コーデ #新作発売 #ファッション好きな人と繋がりたい #今日のコーデ",
-  line: "🎉 春の新作コレクション発売中！\n\n今なら送料無料キャンペーン実施中です。\n\n詳細はこちら ▶︎",
-}
-
-const historyStorageKey = "sns-dashboard-history"
-const calendarStorageKey = "sns-dashboard-calendar-events"
-
-const platformSuffix: Record<Platform, string> = {
-  x: "\n\n#SNS運用 #新着情報",
-  instagram: "\n\nプロフィールのリンクから詳細をチェックしてください。\n\n#SNSマーケティング #キャンペーン #今日のおすすめ",
-  line: "\n\n詳細はこちら ▶︎",
-}
-
-const toneOpening: Record<Tone, string> = {
-  business: "いつもご利用いただきありがとうございます。",
-  friendly: "こんにちは！今日はおすすめのお知らせです。",
-  gyaru: "え、これ見逃せないかも！",
-  promo: "期間限定のお得なお知らせです。",
-}
-
-const toneClosing: Record<Tone, string> = {
-  business: "ご不明点がございましたら、お気軽にお問い合わせください。",
-  friendly: "気になる方はぜひチェックしてみてくださいね。",
-  gyaru: "気になったら今すぐチェックしてね。",
-  promo: "数量・期間限定のため、お早めにご確認ください。",
-}
-
-function readJsonArray<T>(key: string): T[] {
-  if (typeof window === "undefined") return []
-
-  try {
-    const raw = window.localStorage.getItem(key)
-    return raw ? (JSON.parse(raw) as T[]) : []
-  } catch {
-    return []
-  }
-}
-
-function buildGeneratedContent({
-  tone,
-  targetAudience,
-  keywords,
-}: GenerateFormData): GeneratedContent {
-  const topic = keywords.trim() || "新しいお知らせ"
-  const audience = targetAudience.trim() || "フォロワーの皆様"
-  const base = `${toneOpening[tone]}\n\n${topic}\n\n${audience}に向けて、今伝えたいポイントをわかりやすくまとめました。\n\n${toneClosing[tone]}`
-
-  return {
-    x: `${base}${platformSuffix.x}`,
-    instagram: `${base}\n\n画像では商品の魅力や利用シーンが伝わる構成がおすすめです。${platformSuffix.instagram}`,
-    line: `${base}${platformSuffix.line}`,
-  }
+function toIssueMap(result: GenerateContentResult): ValidationIssueMap {
+  return result.records.reduce<ValidationIssueMap>(
+    (issues, record) => ({
+      ...issues,
+      [record.platform]: record.validationIssues,
+    }),
+    { ...emptyValidationIssues },
+  )
 }
 
 function DashboardFallback() {
@@ -103,101 +72,233 @@ function DashboardFallback() {
 }
 
 function DashboardContent() {
+  const repositories = useMemo(() => getRepositories(), [])
+  const analyticsService = useMemo(() => createAnalyticsService(repositories), [repositories])
   const searchParams = useSearchParams()
   const [selectedPlatform, setSelectedPlatform] = useState<Platform>("x")
   const [initialFormData, setInitialFormData] = useState<InitialFormData | null>(null)
-  const [generatedContent, setGeneratedContent] = useState<GeneratedContent>(defaultGeneratedContent)
-  const [lastFormData, setLastFormData] = useState<GenerateFormData>({
+  const [generatedContent, setGeneratedContent] =
+    useState<GeneratedContentByPlatform>(defaultGeneratedContent)
+  const [validationIssues, setValidationIssues] =
+    useState<ValidationIssueMap>(emptyValidationIssues)
+  const [brandSettings, setBrandSettings] = useState<BrandSettings | undefined>()
+  const [topContentReferences, setTopContentReferences] = useState<TopContentPoint[]>([])
+  const [lastFormData, setLastFormData] = useState<GenerateContentInput>({
     platform: "x",
     tone: "friendly",
-    targetAudience: "20代OL",
-    keywords: "春の新作コレクション、期間限定セール",
+    targetAudience: "SNS marketers",
+    keywords: "New product launch, limited discount, time saving",
+    contentLength: "medium",
   })
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [isSavingHistory, setIsSavingHistory] = useState(false)
+  const [isScheduling, setIsScheduling] = useState(false)
+
+  useEffect(() => {
+    const loadGenerationContext = async () => {
+      try {
+        const [settings, dashboardAnalytics] = await Promise.all([
+          repositories.settingsRepository.brandSettings.get("default"),
+          analyticsService.getDashboardAnalytics(),
+        ])
+        if (settings) setBrandSettings(settings)
+        setTopContentReferences(dashboardAnalytics.topContent)
+      } catch (error) {
+        const errorInfo = toDataAccessErrorInfo(error, "Failed to load generation context.")
+        toast.error(errorInfo.message)
+      }
+    }
+
+    void loadGenerationContext()
+  }, [analyticsService, repositories])
 
   useEffect(() => {
     const platformParam = searchParams.get("platform")
     const toneParam = searchParams.get("tone")
     const targetAudienceParam = searchParams.get("targetAudience")
     const keywordsParam = searchParams.get("keywords")
+    const platform = isPlatform(platformParam) ? platformParam : "x"
+    const tone = isTone(toneParam) ? toneParam : "friendly"
 
-    const isValidPlatform = platformParam === "x" || platformParam === "instagram" || platformParam === "line"
-    const isValidTone =
-      toneParam === "business" ||
-      toneParam === "friendly" ||
-      toneParam === "gyaru" ||
-      toneParam === "promo"
+    if (isPlatform(platformParam)) setSelectedPlatform(platformParam)
 
-    if (isValidPlatform) {
-      setSelectedPlatform(platformParam)
-    }
-
-    if (isValidTone || targetAudienceParam || keywordsParam) {
-      setInitialFormData({
-        tone: isValidTone ? toneParam : "friendly",
+    if (isTone(toneParam) || targetAudienceParam || keywordsParam) {
+      const nextInitialData = {
+        tone,
         targetAudience: targetAudienceParam ?? "",
         keywords: keywordsParam ?? "",
-      })
-      setLastFormData({
-        platform: isValidPlatform ? platformParam : "x",
-        tone: isValidTone ? toneParam : "friendly",
-        targetAudience: targetAudienceParam ?? "",
-        keywords: keywordsParam ?? "",
-      })
+      }
+
+      setInitialFormData(nextInitialData)
+      setLastFormData({ platform, ...nextInitialData })
       return
     }
 
     setInitialFormData(null)
   }, [searchParams])
 
-  const handleGenerate = (formData: GenerateFormData) => {
-    setSelectedPlatform(formData.platform)
-    setLastFormData(formData)
-    setGeneratedContent(buildGeneratedContent(formData))
-    toast.success("コンテンツを生成しました", {
-      description: "プレビューで各SNS向けの文面を確認できます",
+  const saveAllGeneratedRecords = async (
+    contents: GeneratedContentByPlatform,
+    input: GenerateContentInput,
+  ) => {
+    const { generatedContents, historyRecords } = createGeneratedContentRecords({
+      contents,
+      input,
+      brandSettings,
     })
+
+    await Promise.all([
+      ...generatedContents.map((record) =>
+        repositories.generatedContentRepository.create(withCurrentDataVersion(record)),
+      ),
+      ...historyRecords.map((record) =>
+        repositories.historyRepository.create(withCurrentDataVersion(record)),
+      ),
+    ])
   }
 
-  const handleSaveHistory = () => {
-    const saved = readJsonArray<Record<string, unknown>>(historyStorageKey)
-    const newRecord = {
-      id: `hist-${Date.now()}`,
-      platform: selectedPlatform,
-      tone: lastFormData.tone,
-      targetAudience: lastFormData.targetAudience || "未設定",
-      keywords: lastFormData.keywords || "未設定",
-      generatedContent: generatedContent[selectedPlatform],
-      createdAt: new Date().toISOString(),
-      status: "unused",
-      isFavorite: false,
+  const requestGeneration = async (formData: GenerateContentInput) => {
+    const response = await fetch("/api/content-generation", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+    const result = (await response.json()) as GenerateContentResult | { error?: string }
+
+    if (!response.ok) {
+      throw new Error("error" in result ? result.error : "Failed to generate content.")
     }
 
-    window.localStorage.setItem(historyStorageKey, JSON.stringify([newRecord, ...saved]))
-    toast.success("生成履歴に保存しました", {
-      description: "履歴ページから編集・再利用できます",
-    })
+    return result as GenerateContentResult
   }
 
-  const handleAddToCalendar = () => {
-    const saved = readJsonArray<Record<string, unknown>>(calendarStorageKey)
+  const handleGenerate = async (formData: ContentFormData) => {
+    const input: GenerateContentInput = {
+      ...formData,
+      action: "generate",
+      brandSettings,
+      highPerformingContent: topContentReferences,
+    }
+
+    setIsGenerating(true)
+    try {
+      const result = await requestGeneration(input)
+      setSelectedPlatform(formData.platform)
+      setLastFormData(input)
+      setGeneratedContent(result.contents)
+      setValidationIssues(toIssueMap(result))
+      await saveAllGeneratedRecords(result.contents, input)
+      toast.success(appLabels.generatedContent)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to generate content.")
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+
+  const handleTransform = async (action: GenerationAction) => {
+    const input: GenerateContentInput = {
+      ...lastFormData,
+      action,
+      brandSettings,
+      previousContent: generatedContent[selectedPlatform],
+      validationIssues: validationIssues[selectedPlatform],
+      highPerformingContent: topContentReferences,
+    }
+
+    setIsGenerating(true)
+    try {
+      const result = await requestGeneration(input)
+      setLastFormData(input)
+      setGeneratedContent(result.contents)
+      setValidationIssues(toIssueMap(result))
+      await saveAllGeneratedRecords(result.contents, input)
+      toast.success("Generated a new version.")
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to generate content.")
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+
+  const handleSaveHistory = async () => {
+    const content = generatedContent[selectedPlatform]
+    const issues = validateContent({ platform: selectedPlatform, content, brandSettings })
+    const blockingIssue = issues.find((issue) => issue.severity === "error")
+
+    if (blockingIssue) {
+      toast.error(blockingIssue.message)
+      return
+    }
+
+    setIsSavingHistory(true)
+    try {
+      const now = new Date()
+      const generatedRecord = await repositories.generatedContentRepository.create(
+        withCurrentDataVersion({
+          id: `gen-${Date.now()}`,
+          platform: selectedPlatform,
+          tone: lastFormData.tone,
+          targetAudience: lastFormData.targetAudience || "Unspecified",
+          keywords: lastFormData.keywords || "Unspecified",
+          body: content,
+          status: "generated",
+          createdAt: now,
+          updatedAt: now,
+          brandSettingsId: brandSettings?.id,
+        }),
+      )
+
+      await repositories.historyRepository.create(
+        withCurrentDataVersion({
+          id: `hist-${Date.now()}`,
+          platform: selectedPlatform,
+          tone: lastFormData.tone,
+          targetAudience: lastFormData.targetAudience || "Unspecified",
+          keywords: lastFormData.keywords || "Unspecified",
+          generatedContent: content,
+          createdAt: now,
+          status: "generated",
+          isFavorite: false,
+          generatedContentId: generatedRecord.id,
+        }),
+      )
+
+      toast.success(appLabels.savedToHistory)
+    } catch (error) {
+      const errorInfo = toDataAccessErrorInfo(error, "Failed to save generated content.")
+      toast.error(errorInfo.message)
+    } finally {
+      setIsSavingHistory(false)
+    }
+  }
+
+  const handleAddToCalendar = async () => {
     const scheduledAt = new Date()
     scheduledAt.setDate(scheduledAt.getDate() + 1)
     scheduledAt.setHours(12, 0, 0, 0)
 
-    const newEvent = {
-      id: `evt-${Date.now()}`,
-      title: lastFormData.keywords || "生成コンテンツ投稿",
-      platform: selectedPlatform,
-      tone: lastFormData.tone,
-      content: generatedContent[selectedPlatform],
-      scheduledAt: scheduledAt.toISOString(),
-      status: "scheduled",
-    }
+    setIsScheduling(true)
+    try {
+      await repositories.calendarRepository.create(
+        withCurrentDataVersion({
+          id: `evt-${Date.now()}`,
+          title: lastFormData.keywords || "Generated content post",
+          platform: selectedPlatform,
+          tone: lastFormData.tone,
+          content: generatedContent[selectedPlatform],
+          scheduledAt,
+          status: "scheduled",
+        }),
+      )
 
-    window.localStorage.setItem(calendarStorageKey, JSON.stringify([newEvent, ...saved]))
-    toast.success("投稿カレンダーに追加しました", {
-      description: "明日12:00の排期として登録しました",
-    })
+      toast.success(appLabels.addedToCalendar)
+    } catch (error) {
+      const errorInfo = toDataAccessErrorInfo(error, "Failed to add content to calendar.")
+      toast.error(errorInfo.message)
+    } finally {
+      setIsScheduling(false)
+    }
   }
 
   return (
@@ -205,8 +306,8 @@ function DashboardContent() {
       <Sidebar />
       <main className="ml-0 flex-1 p-6 lg:ml-64 lg:p-8">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-foreground">コンテンツ生成</h1>
-          <p className="mt-1 text-muted-foreground">AIを使ってSNS投稿を簡単に作成しましょう</p>
+          <h1 className="text-2xl font-bold text-foreground">{appLabels.contentGenerationTitle}</h1>
+          <p className="mt-1 text-muted-foreground">{appLabels.contentGenerationDescription}</p>
         </div>
 
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
@@ -215,13 +316,19 @@ function DashboardContent() {
             setSelectedPlatform={setSelectedPlatform}
             onGenerate={handleGenerate}
             initialData={initialFormData}
+            isGenerating={isGenerating}
           />
           <PreviewArea
             selectedPlatform={selectedPlatform}
             setSelectedPlatform={setSelectedPlatform}
             content={generatedContent}
+            validationIssues={validationIssues}
             onSave={handleSaveHistory}
             onAddToCalendar={handleAddToCalendar}
+            onTransform={handleTransform}
+            isSaving={isSavingHistory}
+            isScheduling={isScheduling}
+            isGenerating={isGenerating}
           />
         </div>
       </main>

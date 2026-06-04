@@ -1,0 +1,68 @@
+[browser] Failed to build dashboard analytics: RepositoryError: {"code":"PGRST205","details":null,"hint":null,"message":"Could not find the table 'public.analytics_metrics' in the schema cache"}
+    at requestSupabase (services/repositories/supabase-repository.ts:104:11)
+    at async Object.list (services/repositories/supabase-repository.ts:138:16)
+    at async Object.getDashboardAnalytics (services/analytics.ts:203:81)
+    at async DashboardPage.useEffect.loadDashboard (app/dashboard/page.tsx:29:27)
+  102 |   if (!response.ok) {
+  103 |     const message = await response.text()
+> 104 |     throw new RepositoryError(
+      |           ^
+  105 |       response.status === 404 ? "not_found" : "network_error",
+  106 |       message || `Supabase request failed with status ${response.status}.`,
+  107 |     ) (services/analytics.ts:248:17)
+[browser] Failed to build dashboard analytics: RepositoryError: {"code":"PGRST205","details":null,"hint":null,"message":"Could not find the table 'public.analytics_metrics' in the schema cache"}
+    at requestSupabase (services/repositories/supabase-repository.ts:107:11)
+    at async Object.list (services/repositories/supabase-repository.ts:141:16)
+    at async Object.getDashboardAnalytics (services/analytics.ts:203:81)
+    at async DashboardPage.useEffect.loadDashboard (app/dashboard/page.tsx:28:68)
+  105 |   if (!response.ok) {
+  106 |     const message = await response.text()
+> 107 |     throw new RepositoryError(
+      |           ^
+  108 |       response.status === 404 ? "not_found" : "network_error",
+  109 |       message || `Supabase request failed with status ${response.status}.`,
+  110 |     ) (services/analytics.ts:248:17)
+[browser] Failed to build dashboard analytics: RepositoryError: {"code":"PGRST205","details":null,"hint":null,"message":"Could not find the table 'public.analytics_metrics' in the schema cache"}
+    at requestSupabase (services/repositories/supabase-repository.ts:107:11)
+    at async Object.list (services/repositories/supabase-repository.ts:141:16)
+    at async Object.getDashboardAnalytics (services/analytics.ts:203:81)
+    at async DashboardPage.useEffect.loadDashboard (app/dashboard/page.tsx:29:27)
+  105 |   if (!response.ok) {
+  106 |     const message = await response.text()
+> 107 |     throw new RepositoryError(
+      |           ^
+  108 |       response.status === 404 ? "not_found" : "network_error",
+  109 |       message || `Supabase request failed with status ${response.status}.`,
+  110 |     ) (services/analytics.ts:248:17)
+[browser] The final argument passed to useEffect changed size between renders. The order and size of this array must remain constant.
+
+Previous: [[object Object]]
+Incoming: [[object Object], [object Object]] 
+    at CalendarPage (app/calendar/page.tsx:61:12)
+    at Set.forEach (<anonymous>)
+  59 |   const events = eventsState.data
+  60 |
+> 61 |   useEffect(() => {
+     |            ^
+  62 |     const loadCalendarData = async () => {
+  63 |       try {
+  64 |         setEventsState((prev) => ({ ...prev, status: "loading", error: null })) (app/calendar/page.tsx:61:12)
+
+<--- Last few GCs --->
+
+[39544:000002C2A9F20000]  2420509 ms: Scavenge 15763.1 (15833.0) -> 15733.8 (15852.5) MB, pooled: 0 MB, 27.39 / 0.00 ms  (average mu = 0.200, current mu = 0.143) allocation failure; 
+[39544:000002C2A9F20000]  2431298 ms: Mark-Compact (reduce) 15734.3 (15852.8) -> 15619.9 (15641.2) MB, pooled: 0 MB, 10717.77 / 120.47 ms  (+ 38.8 ms in 8 steps since start of marking, biggest step 5.0 ms, walltime since start of marking 10789 ms) (averag
+FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
+----- Native stack trace -----
+
+ 1: 00007FF78D2AC44F node::OnFatalError+1343
+ 2: 00007FF78DEF6217 v8::Function::NewInstance+423
+ 3: 00007FF78DCF6C07 v8::base::AddressSpaceReservation::AddressSpaceReservation+322071
+ 4: 00007FF78DCFA914 v8::base::AddressSpaceReservation::AddressSpaceReservation+337700
+ 5: 00007FF78DD0986C v8::internal::StrongRootAllocatorBase::deallocate_impl+16604
+ 6: 00007FF78DD090AB v8::internal::StrongRootAllocatorBase::deallocate_impl+14619
+ 7: 00007FF78F18F8ED v8::base::UnsignedDivisionByConstant<unsigned __int64>+2794685
+ 8: 00007FF78DCF46D0 v8::base::AddressSpaceReservation::AddressSpaceReservation+312544
+ 9: 00007FF78DD78439 v8::Unlocker::~Unlocker+9273
+10: 00007FF78D8ECDC8 v8::String::Utf8Value::~Utf8Value+143384
+11: 000002C2E26775FA 

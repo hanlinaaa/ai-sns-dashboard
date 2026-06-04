@@ -1,0 +1,144 @@
+[     192ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/07vw_next_dist_13_qw0k._.js:2477
+[     508ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/07vw_next_dist_13_qw0k._.js:2477
+[  837928ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/calendar?_rsc=uHYV8b8qMoKU79e6:0
+[  838027ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/calendar?_rsc=uHYV8b8qMoKU79e6:0
+[  838082ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/calendar:0
+[  844243ms] [ERROR] Failed to load resource: net::ERR_CONTENT_LENGTH_MISMATCH @ http://localhost:3000/_next/static/chunks/pages__app_07xvfw~._.js:0
+[  844262ms] [ERROR] Failed to load resource: net::ERR_CONTENT_LENGTH_MISMATCH @ http://localhost:3000/_next/static/chunks/pages__error_07xvfw~._.js:0
+[  844266ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/0p2h_react-dom_0vsf22y._.js:15305
+[  844588ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/07vw_next_dist_099~__9._.js:1226
+[  844588ms] [WARNING] [HMR] Invalid message: {"type":"isrManifest","data":{"/calendar?_rsc=uHYV8b8qMoKU79e6":false,"/calendar":false,"/dashboard?_rsc=baRm8Hg-bKr8antF":false,"/dashboard":false,"/":true,"/settings/brand":true,"/settings/system":true,"/history":true}}
+TypeError: Cannot read properties of undefined (reading 'components')
+    at handleStaticIndicator (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2792:46)
+    at processMessage (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2806:17)
+    at http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2680:13
+    at WebSocket.handleMessage (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2325:17) @ http://localhost:3000/_next/static/chunks/07vw_next_dist_099~__9._.js:1226
+[  844590ms] [ERROR] ./app/dashboard/page.tsx:4:1
+Module not found: Can't resolve '@/features/dashboard/components/kpi-cards'
+  2 |
+  3 | import { Sidebar } from "@/features/navigation/sidebar"
+> 4 | import { KPICards } from "@/features/dashboard/components/kpi-cards"
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 | import { AnalyticsCharts } from "@/features/dashboard/components/analytics-charts"
+  6 | import { TasksWorkflow } from "@/features/dashboard/components/tasks-workflow"
+  7 | import { RecentActivity } from "@/features/dashboard/components/recent-activity"
+
+Import map: aliased to relative './features/dashboard/components/kpi-cards' inside of [project]/
+
+Import traces:
+  Client Component Browser:
+    ./app/dashboard/page.tsx [Client Component Browser]
+    ./app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/dashboard/page.tsx [Client Component SSR]
+    ./app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/07vw_next_dist_099~__9._.js:1945
+[  853664ms] [WARNING] [HMR] Invalid message: {"type":"isrManifest","data":{"/calendar?_rsc=uHYV8b8qMoKU79e6":false,"/dashboard?_rsc=baRm8Hg-bKr8antF":false,"/dashboard":false,"/":true,"/settings/brand":true,"/settings/system":true,"/history":true}}
+TypeError: Cannot read properties of undefined (reading 'components')
+    at handleStaticIndicator (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2792:46)
+    at processMessage (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2806:17)
+    at http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2680:13
+    at WebSocket.handleMessage (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2325:17) @ http://localhost:3000/_next/static/chunks/07vw_next_dist_099~__9._.js:1226
+[  858907ms] [WARNING] [HMR] Invalid message: {"type":"isrManifest","data":{"/calendar?_rsc=uHYV8b8qMoKU79e6":false,"/dashboard?_rsc=baRm8Hg-bKr8antF":false,"/":true,"/settings/brand":true,"/settings/system":true,"/history":true}}
+TypeError: Cannot read properties of undefined (reading 'components')
+    at handleStaticIndicator (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2792:46)
+    at processMessage (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2806:17)
+    at http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2680:13
+    at WebSocket.handleMessage (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2325:17) @ http://localhost:3000/_next/static/chunks/07vw_next_dist_099~__9._.js:1226
+[  859248ms] [WARNING] [HMR] Invalid message: {"type":"isrManifest","data":{"/calendar?_rsc=uHYV8b8qMoKU79e6":false,"/dashboard?_rsc=baRm8Hg-bKr8antF":false,"/":true,"/settings/brand":true,"/settings/system":true,"/history":true}}
+TypeError: Cannot read properties of undefined (reading 'components')
+    at handleStaticIndicator (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2792:46)
+    at processMessage (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2806:17)
+    at http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2680:13
+    at WebSocket.handleMessage (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2325:17) @ http://localhost:3000/_next/static/chunks/07vw_next_dist_099~__9._.js:1226
+[  859697ms] [WARNING] [HMR] Invalid message: {"type":"isrManifest","data":{"/dashboard":false,"/calendar?_rsc=uHYV8b8qMoKU79e6":false,"/dashboard?_rsc=baRm8Hg-bKr8antF":false,"/":true,"/settings/brand":true,"/settings/system":true,"/history":true}}
+TypeError: Cannot read properties of undefined (reading 'components')
+    at handleStaticIndicator (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2792:46)
+    at processMessage (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2806:17)
+    at http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2680:13
+    at WebSocket.handleMessage (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2325:17) @ http://localhost:3000/_next/static/chunks/07vw_next_dist_099~__9._.js:1226
+[  859815ms] [WARNING] [HMR] Invalid message: {"type":"isrManifest","data":{"/calendar":false,"/dashboard":false,"/calendar?_rsc=uHYV8b8qMoKU79e6":false,"/dashboard?_rsc=baRm8Hg-bKr8antF":false,"/":true,"/settings/brand":true,"/settings/system":true,"/history":true}}
+TypeError: Cannot read properties of undefined (reading 'components')
+    at handleStaticIndicator (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2792:46)
+    at processMessage (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2806:17)
+    at http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2680:13
+    at WebSocket.handleMessage (http://localhost:3000/_next/static/chunks/07vw_next_dist_client_0-ljexg._.js:2325:17) @ http://localhost:3000/_next/static/chunks/07vw_next_dist_099~__9._.js:1226
+[  859828ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/calendar:0
+[  859862ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/0p2h_react-dom_0vsf22y._.js:15305
+[  859874ms] Invalid or unexpected token
+[  859878ms] Error: ./app/dashboard/page.tsx:5:1
+Module not found: Can't resolve '@/features/dashboard/components/analytics-charts'
+  3 | import { Sidebar } from "@/features/navigation/sidebar"
+  4 | import { KPICards } from "@/features/dashboard/components/kpi-cards"
+> 5 | import { AnalyticsCharts } from "@/features/dashboard/components/analytics-charts"
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { TasksWorkflow } from "@/features/dashboard/components/tasks-workflow"
+  7 | import { RecentActivity } from "@/features/dashboard/components/recent-activity"
+  8 |
+
+Import map: aliased to relative './features/dashboard/components/analytics-charts' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./app/dashboard/page.tsx [Client Component Browser]
+    ./app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/dashboard/page.tsx [Client Component SSR]
+    ./app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (Error: ./app/dashboard/page.tsx:5:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at Object.getCompilationErrors (file://S:\ai-sns-dashboard\node_modules\.pnpm\next@16.2.6_@babel+core@7.2_40a7effce8bcad24669d45809ebe449e\node_modules\next\dist\server\dev\hot-reloader-turbopack.js:1186:59)
+    at DevBundlerService.getCompilationError (file://S:\ai-sns-dashboard\node_modules\.pnpm\next@16.2.6_@babel+core@7.2_40a7effce8bcad24669d45809ebe449e\node_modules\next\dist\server\lib\dev-bundler-service.js:44:55)
+    at DevServer.getCompilationError (file://S:\ai-sns-dashboard\node_modules\.pnpm\next@16.2.6_@babel+core@7.2_40a7effce8bcad24669d45809ebe449e\node_modules\next\dist\server\dev\next-dev-server.js:720:42)
+    at DevServer.findPageComponents (file://S:\ai-sns-dashboard\node_modules\.pnpm\next@16.2.6_@babel+core@7.2_40a7effce8bcad24669d45809ebe449e\node_modules\next\dist\server\dev\next-dev-server.js:690:43)
+    at async DevServer.renderErrorToResponseImpl (file://S:\ai-sns-dashboard\node_modules\.pnpm\next@16.2.6_@babel+core@7.2_40a7effce8bcad24669d45809ebe449e\node_modules\next\dist\server\base-server.js:1753:26)
+[  859878ms] Error: Module [next]/entry/page-loader.ts { PAGE => "[project]/node_modules/.pnpm/next@16.2.6_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/next/dist/pages/_error.js [client] (ecmascript)" } [client] (ecmascript) was instantiated because it was required from module [hmr-entry]/hmr-entry.js { ENTRY => "[project]/pages/_error" }, but the module factory is not available.
+This is often caused by a stale browser cache, misconfigured Cache-Control headers, or a service worker serving outdated responses.
+To fix this, make sure your Cache-Control headers allow revalidation of chunks and review your service worker configuration. As an immediate workaround, try hard-reloading the page, clearing the browser cache, or unregistering any service workers.
+    at instantiateModuleShared (http://localhost:3000/_next/static/chunks/turbopack-pages__app_0snrvo1._.js:1272:15)
+    at instantiateModule (http://localhost:3000/_next/static/chunks/turbopack-pages__app_0snrvo1._.js:1621:12)
+    at getOrInstantiateModuleFromParent (http://localhost:3000/_next/static/chunks/turbopack-pages__app_0snrvo1._.js:1604:12)
+    at DevContext.commonJsRequire [as r] (http://localhost:3000/_next/static/chunks/turbopack-pages__app_0snrvo1._.js:299:12)
+    at module evaluation (http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__01mw43t._.js:472:23)
+    at http://localhost:3000/_next/static/chunks/turbopack-pages__app_0snrvo1._.js:1307:27
+    at runModuleExecutionHooks (http://localhost:3000/_next/static/chunks/turbopack-pages__app_0snrvo1._.js:1636:13)
+    at instantiateModuleShared (http://localhost:3000/_next/static/chunks/turbopack-pages__app_0snrvo1._.js:1305:9)
+    at instantiateModule (http://localhost:3000/_next/static/chunks/turbopack-pages__app_0snrvo1._.js:1621:12)
+    at getOrInstantiateRuntimeModule (http://localhost:3000/_next/static/chunks/turbopack-pages__app_0snrvo1._.js:1582:12)
+    at Object.registerChunk (http://localhost:3000/_next/static/chunks/turbopack-pages__app_0snrvo1._.js:1988:21)
+[  860178ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/07vw_next_dist_0_deogo._.js:1226
+[  860181ms] [ERROR] ./app/dashboard/page.tsx:5:1
+Module not found: Can't resolve '@/features/dashboard/components/analytics-charts'
+  3 | import { Sidebar } from "@/features/navigation/sidebar"
+  4 | import { KPICards } from "@/features/dashboard/components/kpi-cards"
+> 5 | import { AnalyticsCharts } from "@/features/dashboard/components/analytics-charts"
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import { TasksWorkflow } from "@/features/dashboard/components/tasks-workflow"
+  7 | import { RecentActivity } from "@/features/dashboard/components/recent-activity"
+  8 |
+
+Import map: aliased to relative './features/dashboard/components/analytics-charts' inside of [project]/
+
+Import traces:
+  Client Component Browser:
+    ./app/dashboard/page.tsx [Client Component Browser]
+    ./app/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/dashboard/page.tsx [Client Component SSR]
+    ./app/dashboard/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/07vw_next_dist_0_deogo._.js:1945
+[  891379ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/07vw_next_dist_13_qw0k._.js:2477
+[  891699ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/07vw_next_dist_13_qw0k._.js:2477
+[  894855ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/calendar?_rsc=uHYV8b8qMoKU79e6:0
+[  894900ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/calendar?_rsc=uHYV8b8qMoKU79e6:0
+[  894988ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/calendar:0

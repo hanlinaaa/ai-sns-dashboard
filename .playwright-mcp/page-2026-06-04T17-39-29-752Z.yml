@@ -1,0 +1,247 @@
+- generic:
+  - generic:
+    - complementary:
+      - generic:
+        - generic:
+          - link:
+            - /url: /
+            - generic:
+              - img
+            - generic:
+              - heading [level=1]: サクサクSNS君
+              - paragraph: AI Content Generator
+        - navigation:
+          - generic:
+            - generic:
+              - generic: ワークスペース
+            - generic:
+              - link:
+                - /url: /dashboard
+                - img
+                - generic: ダッシュボード
+              - link:
+                - /url: /
+                - img
+                - generic: コンテンツ生成
+              - link:
+                - /url: /calendar
+                - img
+                - generic: 投稿カレンダー
+              - link:
+                - /url: /history
+                - img
+                - generic: 生成履歴
+          - generic:
+            - generic:
+              - generic: 管理
+            - generic:
+              - link:
+                - /url: /settings/brand
+                - img
+                - generic: ブランド設定
+              - link:
+                - /url: /settings/system
+                - img
+                - generic: システム設定
+    - main:
+      - generic:
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=1]: Content History
+            - paragraph: Manage generated content as reusable assets across editing, approval, scheduling, and publishing.
+      - generic:
+        - generic:
+          - generic:
+            - img
+            - textbox:
+              - /placeholder: Search content, keywords, or audience
+          - generic:
+            - button:
+              - img
+              - text: Export
+        - generic:
+          - combobox:
+            - generic: All platforms
+            - img
+          - combobox:
+            - generic: All tones
+            - img
+          - combobox:
+            - generic: All statuses
+            - img
+          - button:
+            - img
+            - text: Date range
+          - button:
+            - img
+            - text: Favorites
+          - generic: 4 result(s)
+      - generic:
+        - checkbox
+        - generic: Select records
+      - generic:
+        - generic:
+          - generic:
+            - checkbox
+          - generic:
+            - generic:
+              - generic:
+                - img
+                - text: X
+              - generic: Friendly
+              - generic: Published
+              - generic: Validation warning
+              - generic: "Audience: 20代女性"
+              - generic: 2024/01/15 10:30
+            - paragraph: "【新商品発売】 春の新作コレクションが登場しました。 #春コーデ #新作 #ファッション"
+            - generic: "Keywords: 春の新作コレクション、期間限定セール"
+            - generic:
+              - button:
+                - img
+              - button:
+                - img
+                - text: Copy
+              - link:
+                - /url: /?platform=x&tone=friendly&targetAudience=20%E4%BB%A3%E5%A5%B3%E6%80%A7&keywords=%E6%98%A5%E3%81%AE%E6%96%B0%E4%BD%9C%E3%82%B3%E3%83%AC%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%80%81%E6%9C%9F%E9%96%93%E9%99%90%E5%AE%9A%E3%82%BB%E3%83%BC%E3%83%AB
+                - img
+                - text: Regenerate
+              - button [disabled]:
+                - img
+                - text: Add to calendar
+              - button:
+                - img
+                - text: Edit
+              - combobox [expanded]:
+                - generic: Published
+                - img
+              - button:
+                - img
+        - generic:
+          - generic:
+            - checkbox
+          - generic:
+            - generic:
+              - generic:
+                - img
+                - text: Instagram
+              - generic: Promotion
+              - generic: Published
+              - generic: Validation warning
+              - generic: "Audience: ファッション好きの女性"
+              - generic: 2024/01/14 15:20
+            - paragraph: "週末限定BIG SALEを開催中です。 人気アイテムをお得にチェックできます。 #セール #週末限定 #お得情報"
+            - generic: "Keywords: 週末限定セール、最大50%OFF"
+            - generic:
+              - button:
+                - img
+              - button:
+                - img
+                - text: Copy
+              - link:
+                - /url: /?platform=instagram&tone=promo&targetAudience=%E3%83%95%E3%82%A1%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3%E5%A5%BD%E3%81%8D%E3%81%AE%E5%A5%B3%E6%80%A7&keywords=%E9%80%B1%E6%9C%AB%E9%99%90%E5%AE%9A%E3%82%BB%E3%83%BC%E3%83%AB%E3%80%81%E6%9C%80%E5%A4%A750%25OFF
+                - img
+                - text: Regenerate
+              - button [disabled]:
+                - img
+                - text: Add to calendar
+              - button:
+                - img
+                - text: Edit
+              - combobox:
+                - generic: Published
+                - img
+              - button:
+                - img
+        - generic:
+          - generic:
+            - checkbox
+          - generic:
+            - generic:
+              - generic:
+                - img
+                - text: LINE
+              - generic: Business
+              - generic: Scheduled
+              - generic: Validation warning
+              - generic: "Audience: 既存顧客"
+              - generic: 2024/01/13 09:00
+            - paragraph: いつもご利用いただきありがとうございます。 会員様限定でポイント2倍キャンペーンを開催します。
+            - generic: "Keywords: 会員限定、ポイント2倍キャンペーン"
+            - generic:
+              - button:
+                - img
+              - button:
+                - img
+                - text: Copy
+              - link:
+                - /url: /?platform=line&tone=business&targetAudience=%E6%97%A2%E5%AD%98%E9%A1%A7%E5%AE%A2&keywords=%E4%BC%9A%E5%93%A1%E9%99%90%E5%AE%9A%E3%80%81%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%882%E5%80%8D%E3%82%AD%E3%83%A3%E3%83%B3%E3%83%9A%E3%83%BC%E3%83%B3
+                - img
+                - text: Regenerate
+              - button:
+                - img
+                - text: Add to calendar
+              - button:
+                - img
+                - text: Edit
+              - combobox:
+                - generic: Scheduled
+                - img
+              - button:
+                - img
+        - generic:
+          - generic:
+            - checkbox
+          - generic:
+            - generic:
+              - generic:
+                - img
+                - text: X
+              - generic: Gyaru
+              - generic: Generated
+              - generic: Validation warning
+              - generic: "Audience: 10代から20代前半"
+              - generic: 2024/01/12 18:45
+            - paragraph: "新作コスメの限定カラーがかわいすぎる件。 #新作コスメ #限定"
+            - generic: "Keywords: 新作コスメ、限定カラー"
+            - generic:
+              - button:
+                - img
+              - button:
+                - img
+                - text: Copy
+              - link:
+                - /url: /?platform=x&tone=gyaru&targetAudience=10%E4%BB%A3%E3%81%8B%E3%82%8920%E4%BB%A3%E5%89%8D%E5%8D%8A&keywords=%E6%96%B0%E4%BD%9C%E3%82%B3%E3%82%B9%E3%83%A1%E3%80%81%E9%99%90%E5%AE%9A%E3%82%AB%E3%83%A9%E3%83%BC
+                - img
+                - text: Regenerate
+              - button:
+                - img
+                - text: Add to calendar
+              - button:
+                - img
+                - text: Edit
+              - combobox:
+                - generic: Generated
+                - img
+              - button:
+                - img
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e185] [cursor=pointer]:
+    - img [ref=e186]
+  - alert
+  - listbox [ref=e190]:
+    - option "Draft" [disabled]:
+      - generic: Draft
+    - option "Generated" [disabled]:
+      - generic: Generated
+    - option "Scheduled" [disabled]:
+      - generic: Scheduled
+    - option "Pending approval" [disabled]:
+      - generic: Pending approval
+    - option "Published" [active] [selected] [ref=e191]:
+      - generic [ref=e193]:
+        - img
+      - generic [ref=e194]: Published
+    - option "Failed" [ref=e195]:
+      - generic [ref=e197]: Failed

@@ -1,97 +1,164 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { Sidebar } from "@/components/dashboard/sidebar"
-import { CalendarHeader } from "@/components/calendar/calendar-header"
-import { MonthView } from "@/components/calendar/month-view"
-import { WeekView } from "@/components/calendar/week-view"
-import { DayView } from "@/components/calendar/day-view"
-import { EventDialog } from "@/components/calendar/event-dialog"
-import { mockCalendarEvents, CalendarEvent } from "@/lib/calendar-mock"
-import { Platform, Status } from "@/lib/types"
-import { addMonths, subMonths, addWeeks, subWeeks, addDays, subDays, isSameDay } from "date-fns"
 import { toast } from "sonner"
+import { addDays, addMonths, addWeeks, subDays, subMonths, subWeeks } from "date-fns"
+import type { AsyncDataState } from "@/domain/data-state"
+import type {
+  BrandSettings,
+  CalendarEvent,
+  HistoryRecord,
+  Platform,
+  PublishJob,
+  Status,
+  SystemSettings,
+} from "@/domain/types"
+import { DataEmptyState, DataErrorState, DataLoadingState } from "@/components/ui/data-state"
+import { CalendarHeader } from "@/features/calendar/components/calendar-header"
+import { DayView } from "@/features/calendar/components/day-view"
+import { EventDialog } from "@/features/calendar/components/event-dialog"
+import { ListView } from "@/features/calendar/components/list-view"
+import { MonthView } from "@/features/calendar/components/month-view"
+import { WeekView } from "@/features/calendar/components/week-view"
+import { Sidebar } from "@/features/navigation/sidebar"
+import { getRepositories } from "@/services/repositories"
+import { toDataAccessErrorInfo } from "@/services/repositories/errors"
+import { createPublishingService } from "@/services/publishing"
+import { createCopiedCalendarEvent, validateScheduleSave } from "@/services/schedule-service"
 
-export type ViewType = "month" | "week" | "day"
+export type ViewType = "month" | "week" | "day" | "list"
 
-const calendarStorageKey = "sns-dashboard-calendar-events"
+const BRAND_SETTINGS_ID = "default"
+const SYSTEM_SETTINGS_ID = "default"
 
-type StoredCalendarEvent = Omit<CalendarEvent, "scheduledAt"> & {
-  scheduledAt: string
-}
-
-function serializeEvents(events: CalendarEvent[]): StoredCalendarEvent[] {
-  return events.map((event) => ({
-    ...event,
-    scheduledAt: event.scheduledAt.toISOString(),
-  }))
-}
-
-function hydrateEvents(events: StoredCalendarEvent[]): CalendarEvent[] {
-  return events.map((event) => ({
-    ...event,
-    scheduledAt: new Date(event.scheduledAt),
-  }))
+function issueSummary(prefix: string, count: number) {
+  return count === 1 ? `${prefix}: 1 issue.` : `${prefix}: ${count} issues.`
 }
 
 export default function CalendarPage() {
+  const repositories = useMemo(() => getRepositories(), [])
+  const publishingService = useMemo(() => createPublishingService(repositories), [repositories])
   const [currentDate, setCurrentDate] = useState(new Date())
   const [view, setView] = useState<ViewType>("month")
-  const [events, setEvents] = useState<CalendarEvent[]>(mockCalendarEvents)
-  const [isHydrated, setIsHydrated] = useState(false)
-  
-  // Filters
+  const [eventsState, setEventsState] = useState<AsyncDataState<CalendarEvent[]>>({
+    status: "loading",
+    data: [],
+    error: null,
+  })
+  const [brandSettings, setBrandSettings] = useState<BrandSettings | undefined>()
+  const [systemSettings, setSystemSettings] = useState<SystemSettings | undefined>()
+  const [historyRecords, setHistoryRecords] = useState<HistoryRecord[]>([])
+  const [publishJobs, setPublishJobs] = useState<PublishJob[]>([])
   const [platformFilter, setPlatformFilter] = useState<Platform | "all">("all")
   const [statusFilter, setStatusFilter] = useState<Status | "all">("all")
-
-  // Dialog state
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+  const [isMutating, setIsMutating] = useState(false)
+
+  const events = eventsState.data
 
   useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(calendarStorageKey)
-      if (raw) {
-        setEvents(hydrateEvents(JSON.parse(raw) as StoredCalendarEvent[]))
+    const loadCalendarData = async () => {
+      try {
+        setEventsState((prev) => ({ ...prev, status: "loading", error: null }))
+        const [
+          nextEvents,
+          nextBrandSettings,
+          nextSystemSettings,
+          nextHistoryRecords,
+          nextPublishJobs,
+        ] =
+          await Promise.all([
+            repositories.calendarRepository.list(),
+            repositories.settingsRepository.brandSettings.get(BRAND_SETTINGS_ID),
+            repositories.settingsRepository.systemSettings.get(SYSTEM_SETTINGS_ID),
+            repositories.historyRepository.list(),
+            repositories.publishJobRepository.list(),
+          ])
+        setBrandSettings(nextBrandSettings ?? undefined)
+        setSystemSettings(nextSystemSettings ?? undefined)
+        setHistoryRecords(nextHistoryRecords)
+        setPublishJobs(nextPublishJobs)
+        setEventsState({ status: "success", data: nextEvents, error: null })
+
+        const eventsMissingPublishJobs = nextEvents.filter(
+          (event) => event.status === "scheduled" && !event.publishJobId,
+        )
+        if (eventsMissingPublishJobs.length > 0) {
+          try {
+            await Promise.all(
+              eventsMissingPublishJobs.map((event) =>
+                publishingService.createJobFromCalendarEvent({
+                  event,
+                  brandSettings: nextBrandSettings ?? undefined,
+                  runImmediately: event.scheduledAt.getTime() <= Date.now(),
+                }),
+              ),
+            )
+            const [reconciledEvents, reconciledHistoryRecords, reconciledPublishJobs] =
+              await Promise.all([
+                repositories.calendarRepository.list(),
+                repositories.historyRepository.list(),
+                repositories.publishJobRepository.list(),
+              ])
+            setEventsState({ status: "success", data: reconciledEvents, error: null })
+            setHistoryRecords(reconciledHistoryRecords)
+            setPublishJobs(reconciledPublishJobs)
+          } catch (error) {
+            const errorInfo = toDataAccessErrorInfo(error, "Failed to reconcile publish jobs.")
+            toast.error(errorInfo.message)
+          }
+        }
+      } catch (error) {
+        const errorInfo = toDataAccessErrorInfo(error, "Failed to load calendar events.")
+        setEventsState({ status: "error", data: [], error: errorInfo })
+        toast.error(errorInfo.message)
       }
-    } catch {
-      toast.error("保存済み排期の読み込みに失敗しました")
-    } finally {
-      setIsHydrated(true)
     }
-  }, [])
 
-  useEffect(() => {
-    if (!isHydrated) return
-    window.localStorage.setItem(calendarStorageKey, JSON.stringify(serializeEvents(events)))
-  }, [events, isHydrated])
+    void loadCalendarData()
+  }, [publishingService, repositories])
 
-  // Filtering
+  const persistEvents = async (nextEvents: CalendarEvent[], successMessage?: string) => {
+    setIsMutating(true)
+    try {
+      const savedEvents = await repositories.calendarRepository.replaceAll(nextEvents)
+      setEventsState({ status: "success", data: savedEvents, error: null })
+      if (successMessage) toast.success(successMessage)
+      return savedEvents
+    } catch (error) {
+      const errorInfo = toDataAccessErrorInfo(error, "Failed to save calendar events.")
+      setEventsState((prev) => ({ ...prev, status: "error", error: errorInfo }))
+      toast.error(errorInfo.message)
+      throw error
+    } finally {
+      setIsMutating(false)
+    }
+  }
+
   const filteredEvents = useMemo(() => {
-    return events.filter(event => {
+    return events.filter((event) => {
       if (platformFilter !== "all" && event.platform !== platformFilter) return false
       if (statusFilter !== "all" && event.status !== statusFilter) return false
       return true
     })
   }, [events, platformFilter, statusFilter])
 
-  // Navigation
   const handlePrevious = () => {
     if (view === "month") setCurrentDate(subMonths(currentDate, 1))
     if (view === "week") setCurrentDate(subWeeks(currentDate, 1))
-    if (view === "day") setCurrentDate(subDays(currentDate, 1))
+    if (view === "day" || view === "list") setCurrentDate(subDays(currentDate, 1))
   }
 
   const handleNext = () => {
     if (view === "month") setCurrentDate(addMonths(currentDate, 1))
     if (view === "week") setCurrentDate(addWeeks(currentDate, 1))
-    if (view === "day") setCurrentDate(addDays(currentDate, 1))
+    if (view === "day" || view === "list") setCurrentDate(addDays(currentDate, 1))
   }
 
   const handleToday = () => setCurrentDate(new Date())
 
-  // Event handlers
   const handleEventClick = (event: CalendarEvent) => {
     setSelectedEvent(event)
     setSelectedDate(null)
@@ -104,61 +171,150 @@ export default function CalendarPage() {
     setIsDialogOpen(true)
   }
 
+  const refreshCalendarDependencies = async () => {
+    try {
+      const [nextEvents, nextHistoryRecords, nextPublishJobs] = await Promise.all([
+        repositories.calendarRepository.list(),
+        repositories.historyRepository.list(),
+        repositories.publishJobRepository.list(),
+      ])
+      setEventsState({ status: "success", data: nextEvents, error: null })
+      setHistoryRecords(nextHistoryRecords)
+      setPublishJobs(nextPublishJobs)
+      return nextEvents
+    } catch (error) {
+      const errorInfo = toDataAccessErrorInfo(error, "Failed to refresh publishing data.")
+      toast.error(errorInfo.message)
+      throw error
+    }
+  }
+
+  const queuePublishJobForEvent = async (event: CalendarEvent) => {
+    if (event.status !== "scheduled") return
+
+    const result = await publishingService.createJobFromCalendarEvent({
+      event,
+      brandSettings,
+      runImmediately: event.scheduledAt.getTime() <= Date.now(),
+    })
+
+    if (result.ok) {
+      toast.success(result.message)
+    } else {
+      toast.error(result.message)
+    }
+
+    await refreshCalendarDependencies()
+  }
+
+  const saveEventThroughService = async (event: CalendarEvent) => {
+    const previousEvent = events.find((item) => item.id === event.id) ?? null
+    const result = validateScheduleSave({
+      event,
+      existingEvents: events,
+      previousEvent,
+      brandSettings,
+      systemSettings,
+    })
+
+    if (result.blockingIssues.length > 0) {
+      toast.error(issueSummary("Schedule blocked", result.blockingIssues.length), {
+        description: result.blockingIssues[0].message,
+      })
+      return false
+    }
+
+    const nextEvents = previousEvent
+      ? events.map((item) => (item.id === result.event.id ? result.event : item))
+      : [...events, result.event]
+
+    setEventsState((prev) => ({ ...prev, data: nextEvents }))
+    const savedEvents = await persistEvents(nextEvents, "Schedule saved.")
+    const savedEvent = savedEvents.find((item) => item.id === result.event.id) ?? result.event
+
+    if (result.warningIssues.length > 0) {
+      toast.warning(issueSummary("Schedule saved with warnings", result.warningIssues.length), {
+        description: result.warningIssues[0].message,
+      })
+    }
+
+    await queuePublishJobForEvent(savedEvent)
+
+    return true
+  }
+
   const handleEventDrop = (eventId: string, newDate: Date) => {
-    setEvents(prev => {
-      const eventIndex = prev.findIndex(e => e.id === eventId)
-      if (eventIndex === -1) return prev
+    const event = events.find((item) => item.id === eventId)
+    if (!event) return
 
-      const event = prev[eventIndex]
-      // Keep original hours/minutes, just change the date
-      const updatedDate = new Date(newDate)
-      updatedDate.setHours(event.scheduledAt.getHours())
-      updatedDate.setMinutes(event.scheduledAt.getMinutes())
+    const updatedDate = new Date(newDate)
+    updatedDate.setHours(event.scheduledAt.getHours(), event.scheduledAt.getMinutes(), 0, 0)
 
-      // Conflict detection
-      const conflicts = prev.filter(e => 
-        e.id !== eventId && 
-        e.platform === event.platform && 
-        isSameDay(e.scheduledAt, updatedDate) &&
-        Math.abs(e.scheduledAt.getTime() - updatedDate.getTime()) < 10 * 60 * 1000 // 10 mins
-      )
+    void saveEventThroughService({
+      ...event,
+      scheduledAt: updatedDate,
+    })
+  }
 
-      if (conflicts.length > 0) {
-        toast.warning(`注意: ${conflicts.length}件の同プラットフォームの投稿と時間が近接しています（10分以内）`)
+  const handleSaveEvent = async (savedEvent: CalendarEvent) => {
+    const saved = await saveEventThroughService(savedEvent)
+    if (saved) setIsDialogOpen(false)
+  }
+
+  const handleDeleteEvent = async (eventId: string) => {
+    const nextEvents = events.filter((event) => event.id !== eventId)
+    setEventsState((prev) => ({ ...prev, data: nextEvents }))
+    await persistEvents(nextEvents, "Schedule deleted.")
+    setIsDialogOpen(false)
+  }
+
+  const handleCopyEvent = async (event: CalendarEvent) => {
+    const copiedEvent = createCopiedCalendarEvent(event)
+    await saveEventThroughService(copiedEvent)
+  }
+
+  const handleRetryPublishJob = async (jobId: string) => {
+    setIsMutating(true)
+    try {
+      const result = await publishingService.retryJob(jobId, brandSettings)
+      if (result.ok) {
+        toast.success(result.message)
       } else {
-        toast.success("排期を更新しました")
+        toast.error(result.message)
       }
-
-      const newEvents = [...prev]
-      newEvents[eventIndex] = { ...event, scheduledAt: updatedDate }
-      return newEvents
-    })
+      await refreshCalendarDependencies()
+    } catch (error) {
+      const errorInfo = toDataAccessErrorInfo(error, "Failed to retry publish job.")
+      toast.error(errorInfo.message)
+    } finally {
+      setIsMutating(false)
+    }
   }
 
-  const handleSaveEvent = (savedEvent: CalendarEvent) => {
-    setEvents(prev => {
-      const existing = prev.findIndex(e => e.id === savedEvent.id)
-      if (existing >= 0) {
-        const newEvents = [...prev]
-        newEvents[existing] = savedEvent
-        return newEvents
+  const handleCancelPublishJob = async (jobId: string) => {
+    setIsMutating(true)
+    try {
+      const result = await publishingService.cancelJob(jobId)
+      if (result.ok) {
+        toast.success(result.message)
+      } else {
+        toast.error(result.message)
       }
-      return [...prev, savedEvent]
-    })
-    setIsDialogOpen(false)
-  }
-
-  const handleDeleteEvent = (eventId: string) => {
-    setEvents(prev => prev.filter(e => e.id !== eventId))
-    setIsDialogOpen(false)
-    toast.success("排期を削除しました")
+      const nextJobs = await repositories.publishJobRepository.list()
+      setPublishJobs(nextJobs)
+    } catch (error) {
+      const errorInfo = toDataAccessErrorInfo(error, "Failed to cancel publish job.")
+      toast.error(errorInfo.message)
+    } finally {
+      setIsMutating(false)
+    }
   }
 
   return (
     <div className="flex min-h-screen bg-muted/30">
       <Sidebar currentPath="/calendar" />
-      <main className="flex-1 ml-0 lg:ml-64 flex h-screen flex-col overflow-hidden px-4 py-5 sm:px-6 lg:px-8">
-        <CalendarHeader 
+      <main className="ml-0 flex h-screen flex-1 flex-col overflow-hidden px-4 py-5 sm:px-6 lg:ml-64 lg:px-8">
+        <CalendarHeader
           currentDate={currentDate}
           view={view}
           onViewChange={setView}
@@ -172,45 +328,83 @@ export default function CalendarPage() {
           onNewEvent={() => handleDateClick(new Date())}
           events={filteredEvents}
         />
-        
+
         <div className="mt-5 flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border bg-card shadow-sm">
-          {view === "month" && (
-            <MonthView 
-              currentDate={currentDate} 
-              events={filteredEvents} 
+          {eventsState.status === "loading" ? (
+            <DataLoadingState title="Loading calendar" description="Fetching scheduled posts." />
+          ) : null}
+
+          {eventsState.status === "error" ? (
+            <DataErrorState
+              title="Calendar is unavailable"
+              description="Failed to load calendar events."
+              error={eventsState.error}
+            />
+          ) : null}
+
+          {eventsState.status === "success" && filteredEvents.length === 0 ? (
+            <DataEmptyState
+              title="No calendar events"
+              description="Scheduled content appears on the calendar."
+            />
+          ) : null}
+
+          {eventsState.status === "success" && view === "month" && filteredEvents.length > 0 ? (
+            <MonthView
+              currentDate={currentDate}
+              events={filteredEvents}
               onEventClick={handleEventClick}
               onDateClick={handleDateClick}
               onEventDrop={handleEventDrop}
             />
-          )}
-          {view === "week" && (
-            <WeekView 
-              currentDate={currentDate} 
-              events={filteredEvents} 
+          ) : null}
+
+          {eventsState.status === "success" && view === "week" && filteredEvents.length > 0 ? (
+            <WeekView
+              currentDate={currentDate}
+              events={filteredEvents}
               onEventClick={handleEventClick}
               onDateClick={handleDateClick}
               onEventDrop={handleEventDrop}
             />
-          )}
-          {view === "day" && (
-            <DayView 
-              currentDate={currentDate} 
-              events={filteredEvents} 
+          ) : null}
+
+          {eventsState.status === "success" && view === "day" && filteredEvents.length > 0 ? (
+            <DayView
+              currentDate={currentDate}
+              events={filteredEvents}
               onEventClick={handleEventClick}
               onDateClick={handleDateClick}
               onEventDrop={handleEventDrop}
             />
-          )}
+          ) : null}
+
+          {eventsState.status === "success" && view === "list" && filteredEvents.length > 0 ? (
+            <ListView
+              events={filteredEvents}
+              publishJobs={publishJobs}
+              onEventClick={handleEventClick}
+              onCopyEvent={handleCopyEvent}
+              onRetryPublishJob={(jobId) => void handleRetryPublishJob(jobId)}
+              onCancelPublishJob={(jobId) => void handleCancelPublishJob(jobId)}
+              isMutating={isMutating}
+            />
+          ) : null}
         </div>
       </main>
 
-      <EventDialog 
+      <EventDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
         event={selectedEvent}
         initialDate={selectedDate}
-        onSave={handleSaveEvent}
-        onDelete={handleDeleteEvent}
+        historyRecords={historyRecords}
+        brandSettings={brandSettings}
+        systemSettings={systemSettings}
+        onSave={(event) => void handleSaveEvent(event)}
+        onDelete={(eventId) => void handleDeleteEvent(eventId)}
+        onCopy={selectedEvent ? () => void handleCopyEvent(selectedEvent) : undefined}
+        isSaving={isMutating}
       />
     </div>
   )

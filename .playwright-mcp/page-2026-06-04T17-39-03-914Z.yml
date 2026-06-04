@@ -1,0 +1,136 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e190]:
+    - complementary [ref=e191]:
+      - generic [ref=e192]:
+        - link "サクサクSNS君 AI Content Generator" [ref=e194] [cursor=pointer]:
+          - /url: /
+          - img [ref=e196]
+          - generic [ref=e198]:
+            - heading "サクサクSNS君" [level=1] [ref=e199]
+            - paragraph [ref=e200]: AI Content Generator
+        - navigation [ref=e201]:
+          - generic [ref=e202]:
+            - generic [ref=e204]: ワークスペース
+            - generic [ref=e206]:
+              - link "ダッシュボード" [ref=e207] [cursor=pointer]:
+                - /url: /dashboard
+                - img [ref=e208]
+                - generic [ref=e213]: ダッシュボード
+              - link "コンテンツ生成" [ref=e214] [cursor=pointer]:
+                - /url: /
+                - img [ref=e215]
+                - generic [ref=e218]: コンテンツ生成
+              - link "投稿カレンダー" [ref=e219] [cursor=pointer]:
+                - /url: /calendar
+                - img [ref=e220]
+                - generic [ref=e222]: 投稿カレンダー
+              - link "生成履歴" [ref=e223] [cursor=pointer]:
+                - /url: /history
+                - img [ref=e224]
+                - generic [ref=e228]: 生成履歴
+          - generic [ref=e229]:
+            - generic [ref=e231]: 管理
+            - generic [ref=e233]:
+              - link "ブランド設定" [ref=e234] [cursor=pointer]:
+                - /url: /settings/brand
+                - img [ref=e235]
+                - generic [ref=e241]: ブランド設定
+              - link "システム設定" [ref=e242] [cursor=pointer]:
+                - /url: /settings/system
+                - img [ref=e243]
+                - generic [ref=e246]: システム設定
+    - main [ref=e247]:
+      - generic [ref=e248]:
+        - heading "コンテンツ生成" [level=1] [ref=e249]
+        - paragraph [ref=e250]: AIを使ってSNS投稿を作成します
+      - generic [ref=e251]:
+        - generic [ref=e252]:
+          - generic [ref=e254]:
+            - img [ref=e256]
+            - text: Content brief
+          - generic [ref=e259]:
+            - generic [ref=e260]:
+              - generic [ref=e261]: Primary platform
+              - group [ref=e262]:
+                - radio "X" [checked] [ref=e263]
+                - radio "Instagram" [ref=e264]
+                - radio "LINE" [ref=e265]
+            - generic [ref=e266]:
+              - generic [ref=e267]:
+                - generic [ref=e268]: Tone
+                - combobox "Tone" [ref=e269]:
+                  - generic: Gyaru
+                  - img
+              - generic [ref=e270]:
+                - generic [ref=e271]: Length
+                - combobox "Length" [ref=e272]:
+                  - generic: Medium
+                  - img
+            - generic [ref=e273]:
+              - generic [ref=e274]: Target audience
+              - textbox "Target audience" [ref=e275]:
+                - /placeholder: "Example: busy solo founders, first-time buyers, LINE followers"
+                - text: 10代から20代前半
+            - generic [ref=e276]:
+              - generic [ref=e277]: Keywords and offer details
+              - textbox "Keywords and offer details" [ref=e278]:
+                - /placeholder: "Example: spring launch, limited 20% discount, free shipping, new product line"
+                - text: 新作コスメ、限定カラー
+            - generic [ref=e279]:
+              - generic [ref=e280]:
+                - generic [ref=e281]: NG words
+                - textbox "NG words" [ref=e282]:
+                  - /placeholder: Comma or line separated
+              - generic [ref=e283]:
+                - generic [ref=e284]: Must-have words
+                - textbox "Must-have words" [ref=e285]:
+                  - /placeholder: Comma or line separated
+            - button "Generate AI content" [ref=e286]:
+              - img
+              - text: Generate AI content
+        - generic [ref=e287]:
+          - generic [ref=e289]:
+            - generic [ref=e290]: Generated content
+            - generic [ref=e291]: Valid
+          - generic [ref=e292]:
+            - generic [ref=e293]:
+              - tablist [ref=e294]:
+                - tab "X" [selected] [ref=e295]
+                - tab "Instagram" [ref=e296]
+                - tab "LINE" [ref=e297]
+              - tabpanel "X" [ref=e298]:
+                - generic [ref=e300]: Fill out the form and generate real AI copy for X.
+            - generic [ref=e301]:
+              - button "Regenerate" [ref=e302]:
+                - img
+                - text: Regenerate
+              - button "Change tone" [ref=e303]:
+                - img
+                - text: Change tone
+              - button "Shorten" [ref=e304]:
+                - img
+                - text: Shorten
+              - button "Lengthen" [ref=e305]:
+                - img
+                - text: Lengthen
+              - button "Fix issues" [disabled]:
+                - img
+                - text: Fix issues
+              - button "Copy" [ref=e306]:
+                - img
+                - text: Copy
+            - generic [ref=e307]:
+              - button "Save record" [ref=e308]:
+                - img
+                - text: Save record
+              - button "Add to calendar" [ref=e309]:
+                - img
+                - text: Add to calendar
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=e310]:
+        - img [ref=e312]
+        - generic [ref=e315]: Loaded form data from history.
+  - button "Open Next.js Dev Tools" [ref=e185] [cursor=pointer]:
+    - img [ref=e186]
+  - alert [ref=e189]

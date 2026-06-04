@@ -1,0 +1,140 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e223]:
+    - complementary [ref=e224]:
+      - generic [ref=e225]:
+        - link "サクサクSNS君 AI Content Generator" [ref=e227] [cursor=pointer]:
+          - /url: /
+          - img [ref=e229]
+          - generic [ref=e231]:
+            - heading "サクサクSNS君" [level=1] [ref=e232]
+            - paragraph [ref=e233]: AI Content Generator
+        - navigation [ref=e234]:
+          - generic [ref=e235]:
+            - generic [ref=e237]: ワークスペース
+            - generic [ref=e239]:
+              - link "ダッシュボード" [ref=e240] [cursor=pointer]:
+                - /url: /dashboard
+                - img [ref=e241]
+                - generic [ref=e246]: ダッシュボード
+              - link "コンテンツ生成" [ref=e247] [cursor=pointer]:
+                - /url: /
+                - img [ref=e248]
+                - generic [ref=e251]: コンテンツ生成
+              - link "投稿カレンダー" [ref=e252] [cursor=pointer]:
+                - /url: /calendar
+                - img [ref=e253]
+                - generic [ref=e255]: 投稿カレンダー
+              - link "生成履歴" [ref=e256] [cursor=pointer]:
+                - /url: /history
+                - img [ref=e257]
+                - generic [ref=e261]: 生成履歴
+          - generic [ref=e262]:
+            - generic [ref=e264]: 管理
+            - generic [ref=e266]:
+              - link "ブランド設定" [ref=e267] [cursor=pointer]:
+                - /url: /settings/brand
+                - img [ref=e268]
+                - generic [ref=e274]: ブランド設定
+              - link "システム設定" [ref=e275] [cursor=pointer]:
+                - /url: /settings/system
+                - img [ref=e276]
+                - generic [ref=e279]: システム設定
+    - main [ref=e280]:
+      - generic [ref=e282]:
+        - generic [ref=e283]:
+          - img [ref=e285]
+          - generic [ref=e287]:
+            - heading "投稿カレンダー" [level=1] [ref=e288]
+            - paragraph [ref=e289]: SNSの投稿スケジュールを管理・可視化します
+        - generic [ref=e290]:
+          - generic [ref=e291]:
+            - img [ref=e292]
+            - combobox [ref=e294]:
+              - generic: すべて
+              - img
+            - combobox [ref=e296]:
+              - generic: すべて
+              - img
+          - generic [ref=e297]:
+            - button "月" [ref=e298]
+            - button "週" [ref=e299]
+            - button "日" [ref=e300]
+          - generic [ref=e301]:
+            - button [ref=e302]:
+              - img
+            - button "2026年 6月" [ref=e303]
+            - button [ref=e304]:
+              - img
+          - button "エクスポート" [ref=e305]:
+            - img
+            - text: エクスポート
+          - button "新規排期" [ref=e306]:
+            - img
+            - text: 新規排期
+      - generic [ref=e308]:
+        - generic [ref=e309]:
+          - generic [ref=e310]: 日
+          - generic [ref=e311]: 月
+          - generic [ref=e312]: 火
+          - generic [ref=e313]: 水
+          - generic [ref=e314]: 木
+          - generic [ref=e315]: 金
+          - generic [ref=e316]: 土
+        - generic [ref=e317]:
+          - generic [ref=e320]: "31"
+          - generic [ref=e324]: "1"
+          - generic [ref=e328]: "2"
+          - generic [ref=e332]: "3"
+          - generic [ref=e336]: "4"
+          - generic [ref=e338]:
+            - generic [ref=e340]: "5"
+            - generic [ref=e341]:
+              - generic [ref=e342]:
+                - generic [ref=e343]:
+                  - img [ref=e344]
+                  - generic [ref=e346]: 01:14
+                - generic [ref=e347]: calendar smoke
+              - generic [ref=e348]:
+                - generic [ref=e349]:
+                  - img [ref=e350]
+                  - generic [ref=e352]: 12:00
+                - generic [ref=e353]: 春の新作コレクション、期間限定セール
+          - generic [ref=e354]:
+            - generic [ref=e356]: "6"
+            - generic [ref=e358]:
+              - generic [ref=e359]:
+                - img [ref=e360]
+                - generic [ref=e362]: 12:00
+              - generic [ref=e363]: 会員限定、ポイント2倍キャンペーン
+          - generic [ref=e366]: "7"
+          - generic [ref=e370]: "8"
+          - generic [ref=e374]: "9"
+          - generic [ref=e378]: "10"
+          - generic [ref=e382]: "11"
+          - generic [ref=e386]: "12"
+          - generic [ref=e390]: "13"
+          - generic [ref=e394]: "14"
+          - generic [ref=e398]: "15"
+          - generic [ref=e402]: "16"
+          - generic [ref=e406]: "17"
+          - generic [ref=e410]: "18"
+          - generic [ref=e414]: "19"
+          - generic [ref=e418]: "20"
+          - generic [ref=e422]: "21"
+          - generic [ref=e426]: "22"
+          - generic [ref=e430]: "23"
+          - generic [ref=e434]: "24"
+          - generic [ref=e438]: "25"
+          - generic [ref=e442]: "26"
+          - generic [ref=e446]: "27"
+          - generic [ref=e450]: "28"
+          - generic [ref=e454]: "29"
+          - generic [ref=e458]: "30"
+          - generic [ref=e462]: "1"
+          - generic [ref=e466]: "2"
+          - generic [ref=e470]: "3"
+          - generic [ref=e474]: "4"
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e185] [cursor=pointer]:
+    - img [ref=e186]
+  - alert [ref=e189]

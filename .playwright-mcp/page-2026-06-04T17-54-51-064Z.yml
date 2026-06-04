@@ -1,0 +1,158 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - link "サクサクSNS君 AI Content Generator" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img [ref=e8]
+          - generic [ref=e10]:
+            - heading "サクサクSNS君" [level=1] [ref=e11]
+            - paragraph [ref=e12]: AI Content Generator
+        - navigation [ref=e13]:
+          - generic [ref=e14]:
+            - generic [ref=e16]: ワークスペース
+            - generic [ref=e18]:
+              - link "ダッシュボード" [ref=e19] [cursor=pointer]:
+                - /url: /dashboard
+                - img [ref=e20]
+                - generic [ref=e25]: ダッシュボード
+              - link "コンテンツ生成" [ref=e26] [cursor=pointer]:
+                - /url: /
+                - img [ref=e27]
+                - generic [ref=e30]: コンテンツ生成
+              - link "投稿カレンダー" [ref=e31] [cursor=pointer]:
+                - /url: /calendar
+                - img [ref=e32]
+                - generic [ref=e34]: 投稿カレンダー
+              - link "生成履歴" [ref=e35] [cursor=pointer]:
+                - /url: /history
+                - img [ref=e36]
+                - generic [ref=e40]: 生成履歴
+          - generic [ref=e41]:
+            - generic [ref=e43]: 管理
+            - generic [ref=e45]:
+              - link "ブランド設定" [ref=e46] [cursor=pointer]:
+                - /url: /settings/brand
+                - img [ref=e47]
+                - generic [ref=e53]: ブランド設定
+              - link "システム設定" [ref=e54] [cursor=pointer]:
+                - /url: /settings/system
+                - img [ref=e55]
+                - generic [ref=e58]: システム設定
+    - main [ref=e59]:
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - img [ref=e64]
+          - generic [ref=e66]:
+            - heading "Publishing Calendar" [level=1] [ref=e67]
+            - paragraph [ref=e68]: Manage scheduled content before approval and publishing.
+        - generic [ref=e69]:
+          - generic [ref=e70]:
+            - img [ref=e71]
+            - combobox [ref=e73]:
+              - generic: All platforms
+              - img
+            - combobox [ref=e76]:
+              - generic: All statuses
+              - img
+          - generic [ref=e78]:
+            - button "Month" [ref=e79]
+            - button "Week" [ref=e80]
+            - button "Day" [ref=e81]
+            - button "List" [ref=e82]
+          - generic [ref=e83]:
+            - button [ref=e84]:
+              - img
+            - button "Schedule list" [ref=e357]
+            - button [ref=e86]:
+              - img
+          - button "Export" [ref=e87]:
+            - img
+            - text: Export
+          - button "New schedule" [ref=e88]:
+            - img
+            - text: New schedule
+      - table [ref=e363]:
+        - rowgroup [ref=e364]:
+          - row "Scheduled at Title Platform Status Content Actions" [ref=e365]:
+            - columnheader "Scheduled at" [ref=e366]
+            - columnheader "Title" [ref=e367]
+            - columnheader "Platform" [ref=e368]
+            - columnheader "Status" [ref=e369]
+            - columnheader "Content" [ref=e370]
+            - columnheader "Actions" [ref=e371]
+        - rowgroup [ref=e372]:
+          - row "2026/06/05 01:14 calendar smoke X Scheduled calendar smoke Edit Copy" [ref=e373]:
+            - cell "2026/06/05 01:14" [ref=e374]
+            - cell "calendar smoke" [ref=e375]
+            - cell "X" [ref=e376]
+            - cell "Scheduled" [ref=e377]:
+              - generic [ref=e378]: Scheduled
+            - cell "calendar smoke" [ref=e379]:
+              - generic [ref=e380]: calendar smoke
+            - cell "Edit Copy" [ref=e381]:
+              - generic [ref=e382]:
+                - button "Edit" [ref=e383]:
+                  - img
+                  - text: Edit
+                - button "Copy" [ref=e384]:
+                  - img
+                  - text: Copy
+          - 'row "2026/06/05 12:00 春の新作コレクション、期間限定セール X Scheduled 【新商品発売】 春の新作コレクションが登場しました。 最新アイテムを今すぐチェック。 #春コーデ #新作 #ファッション Edit Copy" [ref=e385]':
+            - cell "2026/06/05 12:00" [ref=e386]
+            - cell "春の新作コレクション、期間限定セール" [ref=e387]
+            - cell "X" [ref=e388]
+            - cell "Scheduled" [ref=e389]:
+              - generic [ref=e390]: Scheduled
+            - 'cell "【新商品発売】 春の新作コレクションが登場しました。 最新アイテムを今すぐチェック。 #春コーデ #新作 #ファッション" [ref=e391]':
+              - generic [ref=e392]: "【新商品発売】 春の新作コレクションが登場しました。 最新アイテムを今すぐチェック。 #春コーデ #新作 #ファッション"
+            - cell "Edit Copy" [ref=e393]:
+              - generic [ref=e394]:
+                - button "Edit" [ref=e395]:
+                  - img
+                  - text: Edit
+                - button "Copy" [ref=e396]:
+                  - img
+                  - text: Copy
+          - row "2026/06/05 12:00 会員限定、ポイント2倍キャンペーン LINE Scheduled いつもご利用いただきありがとうございます。 会員様限定でポイント2倍キャンペーンを開催します。 Edit Copy" [ref=e397]:
+            - cell "2026/06/05 12:00" [ref=e398]
+            - cell "会員限定、ポイント2倍キャンペーン" [ref=e399]
+            - cell "LINE" [ref=e400]
+            - cell "Scheduled" [ref=e401]:
+              - generic [ref=e402]: Scheduled
+            - cell "いつもご利用いただきありがとうございます。 会員様限定でポイント2倍キャンペーンを開催します。" [ref=e403]:
+              - generic [ref=e404]: いつもご利用いただきありがとうございます。 会員様限定でポイント2倍キャンペーンを開催します。
+            - cell "Edit Copy" [ref=e405]:
+              - generic [ref=e406]:
+                - button "Edit" [ref=e407]:
+                  - img
+                  - text: Edit
+                - button "Copy" [active] [ref=e408]:
+                  - img
+                  - text: Copy
+          - row "2026/06/06 12:00 会員限定、ポイント2倍キャンペーン LINE Scheduled いつもご利用いただきありがとうございます。 会員様限定でポイント2倍キャンペーンを開催します。 Edit Copy" [ref=e409]:
+            - cell "2026/06/06 12:00" [ref=e410]
+            - cell "会員限定、ポイント2倍キャンペーン" [ref=e411]
+            - cell "LINE" [ref=e412]
+            - cell "Scheduled" [ref=e413]:
+              - generic [ref=e414]: Scheduled
+            - cell "いつもご利用いただきありがとうございます。 会員様限定でポイント2倍キャンペーンを開催します。" [ref=e415]:
+              - generic [ref=e416]: いつもご利用いただきありがとうございます。 会員様限定でポイント2倍キャンペーンを開催します。
+            - cell "Edit Copy" [ref=e417]:
+              - generic [ref=e418]:
+                - button "Edit" [ref=e419]:
+                  - img
+                  - text: Edit
+                - button "Copy" [ref=e420]:
+                  - img
+                  - text: Copy
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=e421]:
+        - img [ref=e423]
+        - generic [ref=e425]:
+          - generic [ref=e426]: "Schedule blocked: 1 issue."
+          - generic [ref=e427]: LINE has 1 scheduled item(s) within 5 minutes.
+  - button "Open Next.js Dev Tools" [ref=e100] [cursor=pointer]:
+    - img [ref=e101]
+  - alert [ref=e356]
